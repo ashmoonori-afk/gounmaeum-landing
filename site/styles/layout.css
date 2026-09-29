@@ -1,0 +1,139 @@
+/*
+ * Layout layer — StyleGallery pattern primitives only.
+ * Adapted from StyleGallery patterns/** (cover, content-limiter, stack, cluster, ram-grid, frame,
+ * switcher, sidebar, sticky-header, overlay-stack, line-up). Kebab-case names with root-child
+ * relationship suffixes; layout properties only; declarations alphabetised (AGENTS.md CSS Authoring).
+ * Constants are tokens defined in the product layer (--content, --gutter, --stack-gap …).
+ */
+/* Layer order: element resets sit below the SG primitives so a reset never cancels a layout declaration
+   (e.g. p { margin: 0 } overriding .content-limiter { margin-inline: auto }). */
+@layer reset, layout, product;
+
+@layer layout {
+  /* patterns/viewport-shell/sticky-header.md */
+  .sticky-header {
+    inset-block-start: 0;
+    position: sticky;
+    z-index: 30;
+  }
+
+  /* patterns/viewport-shell/cover.md — the centred child takes the flexible middle row. */
+  .cover {
+    display: grid;
+    gap: var(--cover-gap, 1rem);
+    grid-template-rows: auto 1fr auto;
+    min-block-size: var(--cover-min, 100dvh);
+    padding-block: var(--cover-padding, 1rem);
+  }
+
+  .cover-center {
+    align-self: center;
+    grid-row: 2;
+  }
+
+  /* patterns/containment/content-limiter.md — max size is a product token. */
+  .content-limiter {
+    box-sizing: border-box;
+    inline-size: 100%;
+    margin-inline: auto;
+    max-inline-size: calc(var(--limit, var(--content)) + var(--gutter) * 2);
+    padding-inline: var(--gutter);
+  }
+
+  /* patterns/stacking/stack.md */
+  .stack {
+    align-content: start;
+    display: grid;
+    gap: var(--stack-gap, 1rem);
+    min-inline-size: 0;
+  }
+
+  /* patterns/in-line-grouping/cluster.md */
+  .cluster {
+    align-items: var(--cluster-align, center);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cluster-gap, 0.75rem);
+    justify-content: var(--cluster-justify, flex-start);
+  }
+
+  /* patterns/grid-repetition/ram-grid.md */
+  .ram-grid {
+    display: grid;
+    gap: var(--grid-gap, 1rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min, 16rem), 100%), 1fr));
+  }
+
+  /* patterns/media-fit/frame.md — ratio is set per instance. */
+  .frame {
+    aspect-ratio: var(--frame-ratio, 16 / 9);
+    display: grid;
+    inline-size: 100%;
+    overflow: clip;
+  }
+
+  .frame-media {
+    block-size: 100%;
+    inline-size: 100%;
+    min-block-size: 0;
+    min-inline-size: 0;
+  }
+
+  /* patterns/split-sidebar/switcher.md */
+  .switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--switcher-gap, 1rem);
+  }
+
+  .switcher-item {
+    flex-basis: calc((var(--switcher-threshold, 40rem) - 100%) * 999);
+    flex-grow: 1;
+    min-inline-size: 0;
+  }
+
+  /* patterns/split-sidebar/sidebar.md */
+  .sidebar {
+    align-items: var(--sidebar-align, stretch);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sidebar-gap, 1rem);
+  }
+
+  .sidebar-primary {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--sidebar-primary-min, 50%);
+  }
+
+  .sidebar-secondary {
+    flex-basis: var(--sidebar-secondary-basis, 18rem);
+    flex-grow: 1;
+    min-inline-size: 0;
+  }
+
+  /* patterns/overlay-exception/overlay-stack.md */
+  .overlay-stack {
+    display: grid;
+  }
+
+  .overlay-stack-item {
+    grid-area: 1 / 1;
+    min-inline-size: 0;
+  }
+
+  /* patterns/stacking/line-up.md */
+  .line-up {
+    display: flex;
+    flex-direction: column;
+    gap: var(--line-up-gap, 1rem);
+  }
+
+  .line-up-body {
+    min-block-size: 0;
+  }
+
+  .line-up-footer {
+    margin-block-start: auto;
+  }
+}

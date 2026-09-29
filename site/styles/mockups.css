@@ -1,0 +1,354 @@
+/*
+ * Product layer — DOM mockups (aria-hidden, fictional data, captioned 화면 예시) and CSS 3D.
+ * Screens are redrawn from source/IRIS_hifi_prototype.html (console home, mobile home) and the
+ * v7 deck phones (p.5, p.8). Text scales with container query units so Korean stays crisp.
+ * 3D: CSS perspective on DOM only; one transform owner per wrapper (docs/motion-briefs.md E1).
+ * Flat visuals: no blurred shadow, glow, gradient or translucent veil behind or on a mockup; layers separate by
+ * flat colour and crisp 1–2 px edges only (0-blur rings are edges, not shadows). CSS 3D depth stays.
+ */
+@layer product {
+  @property --hero-open {
+    inherits: true;
+    initial-value: 1;
+    syntax: "<number>";
+  }
+
+  /* ---------- Phone chrome ---------- */
+  .phone {
+    --phone-w: 14rem;
+    aspect-ratio: 300 / 620;
+    background: #10151e;
+    border-radius: calc(var(--phone-w) * 0.16);
+    box-shadow: inset 0 0 0 1px #2c323d;
+    container-type: inline-size;
+    inline-size: var(--phone-w);
+    padding: calc(var(--phone-w) * 0.032);
+    position: relative;
+  }
+  .phone::before {
+    background: #10151e;
+    block-size: 3.4%;
+    border-radius: 999px;
+    content: "";
+    inline-size: 30%;
+    inset-block-start: 3.1%;
+    inset-inline-start: 35%;
+    position: absolute;
+    z-index: 2;
+  }
+  .phone-screen {
+    background: #fff;
+    block-size: 100%;
+    border-radius: 12.5cqi;
+    color: #191f28;
+    display: flex;
+    flex-direction: column;
+    font-size: 4.8cqi;
+    line-height: 1.45;
+    overflow: hidden;
+  }
+  .ps-status { display: flex; font-size: 0.82em; font-weight: 700; justify-content: space-between; padding: 0.95em 1.6em 0.5em 1.9em; }
+  .ps-status-icons { background: linear-gradient(90deg, #191f28 0 55%, transparent 55% 62%, #191f28 62%) center / 100% 45% no-repeat; border-radius: 2px; inline-size: 2.4em; }
+  .ps-appbar { align-items: center; border-block-end: 1px solid #eef0f3; display: flex; font-size: 1.05em; gap: 0.6em; padding: 0.7em 1.2em; }
+  .ps-appbar-center { justify-content: center; }
+  .ps-back { color: #5f6a78; font-size: 1.3em; line-height: 1; }
+  .ps-body { display: flex; flex: 1; flex-direction: column; gap: 0.55em; min-block-size: 0; padding: 1em 1.2em; }
+  .ps-label { color: #5f6a78; font-size: 0.82em; font-weight: 700; margin-block-start: 0.35em; }
+  .ps-note { color: #5f6a78; font-size: 0.78em; margin-block-start: auto; }
+  .ps-seg { background: #f2f4f6; border-radius: 0.7em; display: grid; gap: 0.25em; grid-template-columns: 1fr 1fr; padding: 0.25em; }
+  .ps-seg span { border-radius: 0.55em; color: #5f6a78; font-weight: 600; padding: 0.45em; text-align: center; }
+  .ps-seg span[data-on] { background: #fff; box-shadow: 0 0 0 1px #dfe3e8; color: #191f28; font-weight: 700; }
+  .ps-chips { display: flex; flex-wrap: wrap; gap: 0.35em; }
+  .ps-chips span { border: 1px solid #e5e8eb; border-radius: 999px; font-size: 0.86em; padding: 0.3em 0.75em; }
+  .ps-chips span[data-on] { background: #e9f1fd; border-color: #a6c8f7; color: #1b68d6; font-weight: 700; }
+  .ps-input { border: 1px solid #e5e8eb; border-radius: 0.6em; padding: 0.55em 0.8em; }
+  .ps-upload { border: 1px dashed #b0b8c1; border-radius: 0.7em; display: grid; gap: 0.1em; padding: 0.7em 0.9em; }
+  .ps-upload small, .ps-welfare small, .ps-approve small, .ps-done small, .ps-checklist small { color: #5f6a78; font-size: 0.8em; }
+  .ps-cta { background: #2458d8; border-radius: 0.75em; color: #fff; font-weight: 700; margin: 0 1.2em 1.4em; padding: 0.8em; text-align: center; }
+
+  .ps-thread { background: #f7f8fa; gap: 0.8em; }
+  .ps-time { color: #5f6a78; font-size: 0.75em; text-align: center; }
+  .ps-bubble { background: #fff; border-radius: 0.2em 1em 1em 1em; box-shadow: 0 0 0 1px #e3e6ea; font-size: 0.92em; line-height: 1.55; max-inline-size: 92%; padding: 0.8em 0.9em; }
+  .ps-link { color: #1b68d6; display: block; font-weight: 700; margin-block-start: 0.5em; }
+  .ps-approve, .ps-done { align-items: center; background: #fff; border: 1px solid #e5e8eb; border-radius: 0.8em; display: flex; gap: 0.7em; padding: 0.7em 0.8em; }
+  .ps-approve div, .ps-done div, .ps-welfare div, .ps-checklist div { display: grid; line-height: 1.35; }
+  .ps-check { background: #1b9e5e; block-size: 1.7em; border-radius: 50%; flex: none; inline-size: 1.7em; position: relative; }
+  .ps-check::after { block-size: 0.75em; border-block-end: 2px solid #fff; border-inline-end: 2px solid #fff; content: ""; inline-size: 0.4em; inset-block-start: 0.4em; inset-inline-start: 0.62em; position: absolute; transform: rotate(40deg); }
+
+  .ps-obit-head { align-items: center; background: #f3f6fc; display: flex; gap: 0.7em; padding: 0.8em 1.2em; }
+  .ps-obit-head small { color: #5f6a78; display: block; font-size: 0.75em; }
+  /* Fictional company monogram (OO) in the obituary header, standing in for the customer's own logo. */
+  .ps-logo { align-items: center; background: #2458d8; block-size: 2.07em; border-radius: 0.36em; color: #fff; display: inline-flex; flex: none; font-family: var(--font-sans); font-size: 0.78em; font-weight: 800; inline-size: 2.07em; justify-content: center; letter-spacing: -0.02em; line-height: 1; }
+  .ps-obit { font-family: var(--font-serif); gap: 0.35em; }
+  .ps-obit-kicker { color: #2458d8; font-family: var(--font-sans); font-size: 0.78em; font-weight: 700; }
+  .ps-obit-name { font-size: 1.5em; font-weight: 700; letter-spacing: -0.02em; }
+  .ps-obit-lead { color: #4e5968; font-size: 0.82em; line-height: 1.6; }
+  .ps-obit-rows { border-block-start: 1px solid #eef0f3; margin-block-start: 0.4em; }
+  .ps-obit-rows div { border-block-end: 1px solid #eef0f3; display: grid; font-size: 0.86em; gap: 0.6em; grid-template-columns: 2.6em 1fr; padding-block: 0.5em; }
+  .ps-obit-rows dt { color: #5f6a78; font-family: var(--font-sans); }
+  .ps-obit-actions { display: grid; font-family: var(--font-sans); gap: 0.4em; margin-block-start: auto; }
+  .ps-obit-actions span { background: #f2f4f6; border-radius: 0.6em; font-size: 0.82em; font-weight: 700; padding: 0.6em 0.8em; }
+
+  .ps-checklist { display: grid; gap: 0.45em; list-style: none; }
+  .ps-checklist li { align-items: center; border: 1px solid #e5e8eb; border-radius: 0.75em; display: flex; gap: 0.7em; padding: 0.6em 0.75em; }
+  .ps-checklist li[data-on] { background: #f5f8fe; border-color: #c9dbf8; }
+  .ps-checklist em { background: #e9f1fd; border-radius: 999px; color: #1b68d6; font-size: 0.72em; font-style: normal; font-weight: 700; margin-inline-start: auto; padding: 0.2em 0.6em; }
+  .ps-box { block-size: 1.2em; border: 1.5px solid #b0b8c1; border-radius: 0.3em; flex: none; inline-size: 1.2em; position: relative; }
+  [data-on] > .ps-box { background: #2458d8; border-color: #2458d8; }
+  [data-on] > .ps-box::after { block-size: 0.6em; border-block-end: 2px solid #fff; border-inline-end: 2px solid #fff; content: ""; inline-size: 0.32em; inset-block-start: 0.1em; inset-inline-start: 0.35em; position: absolute; transform: rotate(40deg); }
+  [data-locked] > .ps-box { background: #5f6a78; border-color: #5f6a78; }
+
+  /* Delivered 근조화환 (chapter 5): a calm, static drawing of the wreath on its stand in a 빈소 corridor,
+     low-saturation flat greys (hard-stop lines only, no soft gradient). Ribbons follow Korean custom: the condolence phrase on the viewer's right, the sender on the left.
+     Flat fills only (no ids: the screen is cloned). */
+  .ps-photo {
+    aspect-ratio: 4 / 3;
+    background:
+      linear-gradient(180deg, transparent 84%, #d5dae1 84% 85%, #e4e7ec 85%),
+      linear-gradient(90deg, transparent 12%, #f5f6f8 12% 13%, transparent 13% 87%, #f5f6f8 87% 88%, transparent 88%),
+      #eaecf0;
+    border-radius: 0.8em;
+    overflow: hidden;
+    position: relative;
+  }
+  .ps-wreath { block-size: 100%; display: block; inline-size: 100%; }
+  .ps-wreath-stand { fill: none; stroke: #8d939c; stroke-linecap: round; stroke-width: 1.6; }
+  .ps-wreath-leaves { fill: none; stroke: #c3ccc2; stroke-width: 3.6; }
+  .ps-wreath-body { fill: none; stroke: #e6e9ed; stroke-width: 10; }
+  .ps-wreath-bloom { fill: none; stroke: #fdfdfd; stroke-dasharray: 0.1 4.4; stroke-linecap: round; stroke-width: 4.2; }
+  .ps-wreath-bloom-mid { stroke-dasharray: 0.1 4.1; stroke-dashoffset: 2; stroke-width: 4.6; }
+  .ps-wreath-bloom-inner { stroke-dasharray: 0.1 3.5; stroke-width: 3.6; }
+  .ps-wreath-edge { fill: none; stroke: #dde1e7; stroke-width: 0.6; }
+  .ps-ribbon { fill: #fdfdfd; stroke: #d9dde3; stroke-width: 0.5; }
+  .ps-ribbon-text { fill: #3a3f47; font-family: var(--font-serif); font-size: 2.5px; font-weight: 700; writing-mode: vertical-rl; }
+  .ps-photo-tag { background: #3a3f47; border-radius: 999px; color: #fff; font-size: 0.72em; font-weight: 600; inset: auto auto 0.6em 0.6em; padding: 0.2em 0.6em; position: absolute; }
+
+  .ps-home-head { display: grid; padding: 0.4em 1.3em 0.6em; }
+  .ps-home-head small { color: #5f6a78; font-size: 0.8em; }
+  .ps-home-head b { font-size: 1.35em; letter-spacing: -0.02em; }
+  .phone-screen > .ps-label { padding-inline: 1.3em; }
+  .ps-welfare { align-items: center; border: 1px solid #eef0f3; border-radius: 0.9em; display: flex; gap: 0.7em; margin: 0.4em 1.1em 0; padding: 0.75em 0.8em; }
+  .ps-welfare i { color: #66707d; font-style: normal; margin-inline-start: auto; }
+  .ps-welfare-icon { align-items: center; background: #e9f1fd; block-size: 2.1em; border-radius: 0.6em; display: inline-flex; flex: none; inline-size: 2.1em; justify-content: center; position: relative; }
+  /* Category glyphs are filled shapes, never a lone ring, so neither echoes the logo's seal (kit README follow-up 3):
+     장례 = a mourning ribbon, 결혼 축하 = a gift bow in the wedding colour. */
+  .ps-welfare-icon svg { block-size: 62%; fill: #2458d8; inline-size: 62%; }
+  .ps-welfare-icon[data-kind="wedding"] { background: #fdf0e9; }
+  .ps-welfare-icon[data-kind="wedding"] svg { fill: #c2571a; }
+  .phone-screen > .ps-note { margin: auto 1.3em 1.4em; }
+  /* Hero home screen ends like the prototype's m-home: the 문의 line under the feed, then the 홈 · 내 복지 · 내 정보 tab bar. */
+  .phone-screen > .ps-note:has(+ .ps-tabbar) { margin: 0.8em 1.3em 0; }
+  .ps-tabbar { border-block-start: 1px solid #eef0f3; color: #8b95a1; display: grid; font-size: 0.8em; font-weight: 600; grid-template-columns: repeat(3, 1fr); line-height: 1.3; margin-block-start: auto; padding: 0.6em 0.5em 1.05em; text-align: center; }
+  .ps-tabbar span { display: grid; gap: 0.2em; justify-items: center; }
+  .ps-tabbar svg { block-size: 1.7em; fill: #b0b8c1; inline-size: 1.7em; }
+  .ps-tabbar [data-on] { color: #2458d8; }
+  .ps-tabbar [data-on] svg { fill: #2458d8; }
+  .ps-track { background: #f7f9fc; border: 1px solid #e5eaf2; border-radius: 0.9em; display: grid; gap: 0.6em; margin: 0.4em 1.1em 0; padding: 0.75em 0.85em; }
+  .ps-track-head { align-items: center; display: flex; gap: 0.5em; justify-content: space-between; }
+  .ps-track-head em { background: #e7f7ee; border-radius: 999px; color: #17683f; font-size: 0.78em; font-style: normal; font-weight: 700; padding: 0.15em 0.6em; }
+  .ps-track-steps { display: grid; gap: 0.3em; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; }
+  .ps-track-steps li { border-block-start: 3px solid #dfe5ee; }
+  .ps-track-steps li[data-on] { border-color: #2458d8; }
+  .ps-track-note { color: #5f6a78; font-size: 0.82em; }
+  .ps-feed { display: grid; list-style: none; margin: 0.1em 1.1em 0; }
+  .ps-feed li { border-block-end: 1px solid #eef0f3; display: grid; font-size: 0.86em; line-height: 1.35; padding-block: 0.45em; }
+  .ps-feed small { color: #5f6a78; font-size: 0.86em; }
+  .ps-request { background: #fff; border: 1px solid #e5e8eb; border-radius: 0.8em; display: grid; gap: 0.7em; padding: 0.8em 0.9em; }
+  .ps-request-rows { display: grid; gap: 0.35em; font-size: 0.88em; }
+  .ps-request-rows span { display: grid; gap: 0.6em; grid-template-columns: 3.4em 1fr; }
+  .ps-request-rows small { color: #5f6a78; }
+  .ps-request-actions { display: grid; gap: 0.4em; grid-template-columns: 1fr 1fr; }
+  .ps-request-actions span { border: 1px solid #d5dbe3; border-radius: 0.6em; font-weight: 700; padding: 0.5em; text-align: center; }
+  .ps-request-actions span[data-on] { background: #2458d8; border-color: #2458d8; color: #fff; }
+  .ps-obit-note { background: #f7f9fc; border-radius: 0.6em; display: grid; font-family: var(--font-sans); font-size: 0.82em; gap: 0.1em; margin-block-start: 0.5em; padding: 0.6em 0.8em; }
+  .ps-obit-note small { color: #5f6a78; font-size: 0.9em; }
+  .ps-obit-message { border-inline-start: 2px solid #dfe5ee; display: grid; font-size: 0.82em; gap: 0.1em; margin-block-start: 0.6em; padding-inline-start: 0.7em; }
+  .ps-obit-message small { color: #5f6a78; font-family: var(--font-sans); font-size: 0.9em; }
+
+  /* ---------- Hero layered stack (E1) ---------- */
+  /* The frame takes the panel token (tint on white, the card navy on the navy catchphrase); the mock UIs inside keep
+     their light literal colours on both surfaces, so their text colour is pinned to the light ink. */
+  .hero-object {
+    --frame-ratio: 1 / 1;
+    background: var(--color-panel);
+    border: 1px solid var(--color-panel-line);
+    color: var(--light-ink);
+    border-radius: var(--radius-xl);
+    container-type: inline-size;
+    perspective: 1400px;
+    perspective-origin: 55% 40%;
+  }
+  .hero-object-enter, .hero-object-scroll, .hero-object-tilt, .hero-stack { block-size: 100%; inline-size: 100%; transform-style: preserve-3d; }
+  .hero-object-scroll { --hero-depth: 1; transform: rotateX(4deg) rotateY(-12deg); }
+  .hero-object-tilt { transition: transform 500ms var(--ease-out); }
+  .hero-stack { padding: 9% 6% 8% 7%; }
+  .hero-layer { transform-style: preserve-3d; }
+  .hero-layer-console {
+    align-self: start;
+    inline-size: 88%;
+    justify-self: start;
+    transform: translate3d(0, 0, calc(var(--hero-open) * var(--hero-depth) * -90px));
+  }
+  .hero-layer-phone {
+    align-self: end;
+    justify-self: end;
+    transform: translate3d(0, 0, calc(var(--hero-open) * var(--hero-depth) * 40px));
+  }
+  /* Hero phone: 38cqi wide (≈195 px at 1440, the console's left half stays clear) with a 5.8cqi base, so the
+     smallest UI text (0.78em) renders at ≥ 8 CSS px at 1440 (docs/changelog.md, fix round 2). */
+  .hero-stack { --hero-phone-w: 38cqi; }
+  .hero-layer-phone .phone { --phone-w: var(--hero-phone-w); }
+  .hero-layer-phone .phone-screen { font-size: 5.8cqi; }
+  .hero-layer-chip {
+    align-items: center;
+    align-self: center;
+    background: #fff;
+    border: 2px solid var(--color-edge);
+    border-radius: 999px;
+    color: #191f28;
+    display: inline-flex;
+    font-size: 2.6cqi;
+    font-weight: 700;
+    gap: 0.5em;
+    justify-self: end;
+    margin-block-start: 62%;
+    /* The chip overlaps only the phone's left bezel (3.5cqi), never the phone's text. */
+    margin-inline-end: calc(var(--hero-phone-w) - 3.5cqi);
+    padding: 0.65em 1.1em 0.65em 0.7em;
+    transform: translate3d(0, 0, calc(var(--hero-open) * var(--hero-depth) * 60px));
+  }
+  .chip-check { background: #1b9e5e; block-size: 1.5em; border-radius: 50%; inline-size: 1.5em; position: relative; }
+  .chip-check::after { block-size: 0.7em; border-block-end: 2px solid #fff; border-inline-end: 2px solid #fff; content: ""; inline-size: 0.36em; inset-block-start: 0.33em; inset-inline-start: 0.55em; position: absolute; transform: rotate(40deg); }
+
+  .mini-console {
+    background: #f9fafb;
+    border: 1.5px solid var(--color-edge);
+    border-radius: 2.2cqi;
+    display: grid;
+    font-size: 2.05cqi;
+    grid-template-columns: 22% minmax(0, 1fr);
+    line-height: 1.4;
+    overflow: hidden;
+  }
+  .mc-side { background: #fff; border-inline-end: 1px solid #eef0f3; display: grid; gap: 0.3em; align-content: start; padding: 1.1em 0.8em; }
+  .mc-side span { border-radius: 0.4em; color: #5f6a78; padding: 0.3em 0.5em; }
+  .mc-side span[data-on] { background: #e9f1fd; color: #1b68d6; font-weight: 700; }
+  .mc-brand { font-size: 1.05em; margin-block-end: 0.5em; padding-inline: 0.5em; }
+  .mc-main { display: grid; gap: 0.6em; align-content: start; padding: 0 1.1em 1.3em; }
+  .mc-top { align-items: center; border-block-end: 1px solid #eef0f3; display: flex; justify-content: space-between; margin-inline: -1.1em; padding: 0.8em 1.1em; }
+  .mc-top em, .cm-top em { background: #e9f1fd; border-radius: 999px; color: #1b68d6; font-size: 0.85em; font-style: normal; font-weight: 700; padding: 0.15em 0.7em; }
+  .mc-hi { font-size: 1.25em; font-weight: 700; }
+  .mc-alert, .cm-alert { align-items: center; background: #fff4e0; border: 1px solid #f0daa6; border-radius: 0.7em; display: flex; gap: 0.7em; padding: 0.6em 0.8em; }
+  .mc-alert i, .cm-alert i { align-items: center; background: #e8890c; block-size: 1.6em; border-radius: 50%; color: #fff; display: inline-flex; flex: none; font-style: normal; font-weight: 800; inline-size: 1.6em; justify-content: center; }
+  .mc-alert div, .cm-alert div { display: grid; }
+  .mc-alert b, .cm-alert b { color: #a0580a; }
+  .mc-alert small, .cm-alert small { color: #5f6a78; }
+  .mc-h { font-weight: 700; margin-block-start: 0.3em; }
+  .mc-card { background: #fff; border: 1px solid #eef0f3; border-radius: 0.8em; display: grid; gap: 0.3em; padding: 0.8em 0.9em; }
+  .mc-tag, .cm-tag { background: #fff4e0; border-radius: 999px; color: #a0580a; font-size: 0.85em; font-style: normal; font-weight: 700; justify-self: start; padding: 0.1em 0.6em; }
+  .mc-info, .cm-info { display: grid; gap: 0.5em; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-block-start: 0.3em; }
+  .mc-info span, .cm-info span { display: grid; }
+  .mc-info small, .cm-info small { color: #5f6a78; }
+
+  @media (max-width: 959.98px) {
+    /* Flattened pose below 960 px (like SG scene-navigation narrow poses). */
+    .hero-object-scroll { --hero-depth: 0; transform: none; }
+    .hero-object-tilt { transform: none !important; }
+  }
+
+  /* E1 entrance, once, when the object first enters view (scripts/motion.js sets data-enter; landing v3 moved the
+     object below the brand hero). "ready" is the off-screen pre-state; without script or with reduced motion the
+     attribute is never set, so the object is at rest from the start.
+     Two overlapping mockups are never cross-faded (flat rule: no translucent veil on a mockup; v3 fix round): only the
+     console behind fades (0–360 ms); the phone in front is always opaque and is revealed bottom → top by clip-path
+     (300–860 ms) while the stack rises; the chip fades in after the phone has landed (860–1140 ms). */
+  [data-enter="ready"] .hero-object-enter { --hero-open: 0; transform: translateY(24px); }
+  [data-enter="ready"] :is(.hero-layer-console, .hero-layer-chip) { opacity: 0; }
+  [data-enter="ready"] .hero-layer-phone { clip-path: inset(100% -2% -2% -2%); }
+  [data-enter="run"] .hero-object-enter { animation: hero-enter 900ms var(--ease-out) both; }
+  [data-enter="run"] .hero-layer-console { animation: hero-layer-fade 360ms ease-out both; }
+  /* Both keyframes are inset() so the reveal interpolates (inset ↔ none would flip discretely at 50 %); fill backwards
+     only, so no clip remains once it ends. The 2 % bleed keeps the phone edges uncut while it runs. */
+  [data-enter="run"] .hero-layer-phone { animation: hero-layer-rise 560ms var(--ease-out) 300ms backwards; }
+  [data-enter="run"] .hero-layer-chip { animation: hero-layer-fade 280ms ease-out 860ms both; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-enter] .hero-object-enter { --hero-open: 1; transform: none; }
+    [data-enter] .hero-layer { clip-path: none; opacity: 1; }
+  }
+  @keyframes hero-enter { from { --hero-open: 0; transform: translateY(24px); } }
+  @keyframes hero-layer-fade { from { opacity: 0; } }
+  @keyframes hero-layer-rise {
+    from { clip-path: inset(100% -2% -2% -2%); }
+    to { clip-path: inset(-2%); }
+  }
+
+  /* ---------- Console mock (L4) + settle (E-console) ---------- */
+  .console-scene {
+    --frame-ratio: 16 / 8.8;
+    background: var(--color-panel);
+    border: 1px solid var(--color-panel-line);
+    color: var(--light-ink);
+    border-radius: var(--radius-xl);
+    container-type: inline-size;
+    padding: 4.5cqi 5cqi 0;
+    perspective: 1600px;
+    perspective-origin: 50% 0%;
+  }
+  .console-plane { block-size: 100%; transform-origin: 50% 100%; }
+  .console-mock {
+    background: #f9fafb;
+    block-size: 100%;
+    border: 1.5px solid var(--color-edge);
+    border-block-end: 0;
+    border-radius: 1.4cqi 1.4cqi 0 0;
+    display: grid;
+    font-size: 1.22cqi;
+    grid-template-columns: 19% minmax(0, 1fr);
+    line-height: 1.45;
+    overflow: hidden;
+  }
+  .cm-side { background: #fff; border-inline-end: 1px solid #eef0f3; display: grid; gap: 0.2em; align-content: start; padding: 1.4em 1em; }
+  .cm-side span { border-radius: 0.5em; color: #4e5968; padding: 0.45em 0.7em; }
+  .cm-side span[data-on] { background: #e9f1fd; color: #1b68d6; font-weight: 700; }
+  .cm-brand { display: grid; margin-block-end: 0.8em; padding-inline: 0.7em; }
+  .cm-brand b { font-size: 1.15em; }
+  .cm-brand small, .cm-grp { color: #5f6a78; font-size: 0.85em; }
+  .cm-grp { font-weight: 600; margin-block-start: 0.8em; padding-inline: 0.7em; }
+  .cm-main { display: grid; grid-template-rows: auto 1fr; min-inline-size: 0; }
+  .cm-top { align-items: center; background: #fff; border-block-end: 1px solid #eef0f3; display: flex; justify-content: space-between; padding: 0.9em 1.8em; }
+  .cm-content { display: grid; gap: 1em; align-content: start; padding: 1.4em 1.8em; }
+  .cm-hi { font-size: 1.5em; font-weight: 700; }
+  .cm-hi small { color: #5f6a78; font-size: 0.6em; font-weight: 500; margin-inline-start: 0.5em; }
+  .cm-btn { background: #fff; border: 1px solid #f0daa6; border-radius: 0.5em; color: #a0580a; font-weight: 700; margin-inline-start: auto; padding: 0.3em 0.8em; }
+  .cm-grid { display: grid; gap: 1em; grid-template-columns: 1.25fr 1fr; }
+  .cm-card { background: #fff; border: 1px solid #eef0f3; border-radius: 1em; display: grid; gap: 0.35em; align-content: start; padding: 1.1em 1.2em; }
+  .cm-h { font-weight: 700; margin-block-end: 0.3em; }
+  .cm-name { font-size: 1.2em; }
+  .cm-meta { color: #5f6a78; }
+  .cm-progress { display: flex; flex-wrap: wrap; gap: 0.4em; margin-block-start: 0.6em; }
+  .cm-progress span { border: 1px solid #e5e8eb; border-radius: 999px; color: #5f6a78; font-size: 0.9em; padding: 0.2em 0.7em; }
+  .cm-progress span[data-on] { background: #e7f7ee; border-color: #bfe6cf; color: #1b7a4b; font-weight: 600; }
+  .cm-upc { align-items: start; border-block-start: 1px solid #f2f4f6; display: flex; gap: 0.8em; padding-block: 0.55em; }
+  .cm-upc > span { color: #1b68d6; font-weight: 700; min-inline-size: 2.8em; }
+  .cm-upc div { display: grid; }
+  .cm-upc small { color: #5f6a78; }
+  .cm-kpis { display: grid; gap: 0.8em; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cm-kpis span { background: #fff; border: 1px solid #eef0f3; border-radius: 0.9em; display: grid; gap: 0.2em; padding: 0.8em 1em; }
+  .cm-kpis small { color: #5f6a78; }
+  .cm-kpis b { font-size: 1.5em; letter-spacing: -0.02em; }
+  .cm-quick { display: grid; gap: 0.6em; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .cm-quick span { background: #fff; border: 1px solid #eef0f3; border-radius: 0.8em; font-weight: 600; padding: 0.8em 1em; }
+
+  @container (max-width: 40rem) {
+    .console-mock { font-size: 2.7cqi; grid-template-columns: minmax(0, 1fr); }
+    .cm-side, .cm-grid > .cm-card:last-child, .cm-quick, .cm-btn { display: none; }
+    .cm-grid { grid-template-columns: minmax(0, 1fr); }
+    .cm-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cm-content { padding: 1em 1.2em; }
+    .cm-top { padding-inline: 1.2em; }
+  }
+  .console-figure { container: console-figure / inline-size; }
+  @container console-figure (max-width: 40rem) {
+    .console-scene { --frame-ratio: 4 / 3.4; }
+  }
+}

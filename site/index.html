@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>고운마음 — 장례 전문가가 설계한 기업 경조사 플랫폼</title>
+  <meta name="description" content="한국장례협회와 공식 제휴한 기업 경조사 플랫폼이에요. 장례·결혼 신청과 승인부터 모바일 부고장·화환·부의금·축의금 전달까지 회사 이름으로 한곳에서 처리하고, 도입비·이용료 없이 시작할 수 있어요.">
+  <meta name="theme-color" content="#FFFFFF">
+  <!-- 고운마음 logo kit (brand/logo/, Round 3): 16 px cut SVG with a dark-tab rule, PNG fallback, apple-touch tile. -->
+  <link rel="icon" href="assets/brand/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/brand/favicon-180.png">
+  <script>document.documentElement.dataset.js = "on";</script>
+  <!-- E-logo start gate (docs/motion-briefs.md E-logo): the draw starts once the web fonts have settled (or after 800 ms),
+       so the font swap relayout never lands inside it. Until then styles/brand-hero.css holds the animations paused. -->
+  <script>
+    Promise.race([document.fonts ? document.fonts.ready : null, new Promise((resolve) => setTimeout(resolve, 800))])
+      .catch(() => null)
+      .then(() => requestAnimationFrame(() => { document.documentElement.dataset.logo = "play"; }));
+  </script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&amp;display=swap">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/product.css">
+  <link rel="stylesheet" href="styles/surfaces.css">
+  <link rel="stylesheet" href="styles/brand-hero.css">
+  <link rel="stylesheet" href="styles/mockups.css">
+  <link rel="stylesheet" href="styles/story.css">
+  <link rel="stylesheet" href="styles/operator.css">
+  <link rel="stylesheet" href="styles/footer.css">
+  <script type="module" src="scripts/site.js"></script>
+  <script type="module" src="scripts/motion.js"></script>
+  <script type="module" src="scripts/form.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header sticky-header" data-header>
+    <div class="site-header-inner content-limiter">
+      <a class="brand" href="#top">
+        <img class="brand-lockup" src="assets/brand/gounmaeum-lockup-32.svg" width="121" height="32" alt="고운마음">
+        <span class="brand-operator" data-operator-line>운영 아이리스</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle hidden>
+        <span class="sr-only" data-menu-label>메뉴 열기</span>
+        <span class="menu-toggle-bar menu-toggle-bar-top" aria-hidden="true"></span>
+        <span class="menu-toggle-bar menu-toggle-bar-bottom" aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="주요 메뉴" data-open="false">
+        <ul class="site-nav-list" role="list">
+          <li><a href="#services">서비스</a></li>
+          <li><a href="#flow">이용 흐름</a></li>
+          <li><a href="#care">장례케어</a></li>
+          <li><a href="#products">상조상품</a></li>
+          <li><a href="#faq">자주 묻는 질문</a></li>
+        </ul>
+        <a class="button button-primary button-small" href="#apply">도입 문의</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- L1a Brand hero: full-bleed blue band, the kit's white lockup inlined (brand/logo/gounmaeum-lockup-white.svg,
+         same viewBox and path data) and drawn once on load (docs/motion-briefs.md E-logo). The page's h1 is in L1b. -->
+    <section class="brand-hero cover" id="top" data-surface="blue">
+      <div class="brand-hero-center cover-center">
+        <svg class="brand-hero-lockup" viewBox="5 5 205.88 54" width="244" height="64" role="img" aria-labelledby="brand-hero-name" focusable="false" data-brand-lockup>
+          <title id="brand-hero-name">고운마음</title>
+          <path class="gm-card" fill="#FFFFFF" d="M51 34.325V10.5C51 7.462 48.538 5 45.5 5H10.5C7.462 5 5 7.462 5 10.5V45.5C5 48.538 7.462 51 10.5 51H34.325A14 14 0 0 1 34.144 46H12C11.448 46 11 45.44 11 44.75V11.25C11 10.56 11.448 10 12 10H44C44.552 10 45 10.56 45 11.25V34.325A14 14 0 0 1 51 34.325Z"/>
+          <path class="gm-giyeok" fill="#FFFFFF" d="M17 17H39V34H33V22H17Z"/>
+          <path class="gm-seal" fill="#FFFFFF" d="M48 37A11 11 0 1 1 48 59A11 11 0 1 1 48 37ZM48 42.25A5.75 5.75 0 1 0 48 53.75A5.75 5.75 0 1 0 48 42.25Z"/>
+          <path class="gm-wordmark" fill="#FFFFFF" d="M98.074 15.837L69.620 15.837L69.620 20.635L92.013 20.635C91.949 25.076 91.844 30.443 90.371 37.514L96.516 38.145C98.074 29.811 98.074 24.297 98.074 19.457ZM101.231 41.934L84.268 41.934L84.268 28.801L78.249 28.801L78.249 41.934L66 41.934L66 46.816L101.231 46.816ZM136.750 31.242L101.435 31.242L101.435 35.999L116.336 35.999L116.336 42.355L122.481 42.355L122.481 35.999L136.750 35.999ZM132.878 45.806L111.621 45.806L111.621 39.029L105.518 39.029L105.518 50.689L132.878 50.689ZM119.072 13.353C110.653 13.396 104.971 16.510 104.971 21.435C104.971 26.402 110.653 29.475 119.072 29.475C127.490 29.475 133.130 26.402 133.130 21.435C133.130 16.510 127.490 13.396 119.072 13.353ZM119.072 18.110C123.744 18.110 126.606 19.204 126.606 21.435C126.606 23.582 123.744 24.676 119.072 24.676C114.442 24.676 111.495 23.582 111.537 21.435C111.495 19.204 114.442 18.110 119.072 18.110ZM157.505 16.300L138.690 16.300L138.690 42.018L157.505 42.018ZM144.667 21.014L151.485 21.014L151.485 37.219L144.667 37.219ZM168.238 12.680L162.177 12.680L162.177 51.320L168.238 51.320L168.238 32L173.710 32L173.710 26.991L168.238 26.991ZM193.244 13.353C184.657 13.353 179.059 16.258 179.059 21.014C179.059 25.728 184.657 28.591 193.244 28.548C201.914 28.591 207.386 25.728 207.428 21.014C207.386 16.258 201.914 13.353 193.244 13.353ZM193.244 18.068C198.295 18.026 201.157 18.994 201.157 21.014C201.157 22.950 198.295 23.876 193.244 23.876C188.150 23.876 185.330 22.950 185.372 21.014C185.330 18.994 188.150 18.026 193.244 18.068ZM206.671 37.598L179.690 37.598L179.690 50.899L206.671 50.899ZM185.625 42.355L200.778 42.355L200.778 46.059L185.625 46.059ZM210.880 30.443L175.649 30.443L175.649 35.241L210.880 35.241Z"/>
+        </svg>
+        <p class="brand-hero-line">기업 경조사 플랫폼</p>
+      </div>
+      <span class="brand-hero-cue" aria-hidden="true"></span>
+    </section>
+
+    <!-- L1b Catchphrase (the former hero): the only h1, 0원 + Q-line, CTAs, trust line and the CSS-3D product object -->
+    <section class="hero cover" id="intro" data-surface="navy" aria-labelledby="hero-title">
+      <div class="hero-layout content-limiter cover-center">
+        <div class="hero-copy stack">
+          <h1 class="hero-title" id="hero-title"><span class="hero-title-line"><span class="accent">장례 전문가</span>가 설계한</span> <br><span class="hero-title-line">기업 경조사 플랫폼</span></h1>
+          <p class="hero-sub">장례·결혼 신청과 승인부터 모바일 부고장·화환·<span class="nobr">부의금·축의금</span> 전달까지, 회사&nbsp;이름으로 한곳에서&nbsp;처리해요.</p>
+          <div class="money-block">
+            <p class="money-claim">도입비·이용료 <strong class="money-figure">0원</strong></p>
+            <p class="money-qualifier">※ 장례케어 대금은 이용한 임직원 또는 가족이 기업&nbsp;제휴가격으로 결제하고, 화환·<span class="nobr">부의금·축의금</span>은 회사 경조 규정에 따라 회사가&nbsp;결제해요.</p>
+          </div>
+          <div class="hero-actions cluster" data-hero-actions>
+            <a class="button button-primary button-large" href="#apply">도입 문의하기</a>
+            <!-- The external deck edition (deck/고운마음_기업경조사플랫폼_소개서_외부용.pdf, copied unchanged; 436,820 bytes). -->
+            <a class="button button-secondary button-large button-download" href="assets/docs/gounmaeum-introduction.pdf" download="고운마음_기업경조사플랫폼_소개서.pdf" type="application/pdf" data-download>
+              <svg class="button-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9.2M6.2 8.6 10 12.4l3.8-3.8M4 15.5h12"/></svg>
+              <span>소개서 다운로드</span>
+              <span class="button-hint">PDF · 약&nbsp;0.4MB</span>
+            </a>
+          </div>
+          <div class="hero-meta cluster">
+            <p class="hero-status"><span class="status-dot" aria-hidden="true"></span><span>오픈 예정 · 도입 문의를 전화로 받고&nbsp;있어요</span></p>
+            <p class="trust-badge"><img class="trust-badge-logo" src="assets/kfa-logo.png" width="116" height="25" alt="사단법인 한국장례협회" decoding="async"><span class="trust-badge-text">공식 제휴</span></p>
+          </div>
+        </div>
+        <figure class="hero-figure" data-hero-figure>
+          <div class="hero-object frame" aria-hidden="true" data-hero-object>
+            <div class="hero-object-enter">
+              <div class="hero-object-scroll" data-hero-scroll>
+                <div class="hero-object-tilt" data-hero-tilt>
+                  <div class="hero-stack overlay-stack">
+                    <div class="hero-layer hero-layer-console overlay-stack-item">
+                      <div class="mini-console">
+                        <div class="mc-side"><b class="mc-brand">고운마음</b><span data-on>홈</span><span>복지 신청</span><span>화환</span><span>부고장</span><span>복지 정책</span></div>
+                        <div class="mc-main">
+                          <div class="mc-top"><span>홈</span><em>Admin</em></div>
+                          <p class="mc-hi">안녕하세요, 김○○님</p>
+                          <div class="mc-alert"><i>!</i><div><b>증빙 승인 대기 1건</b><small>이○○ 사원 · 결혼 축하</small></div></div>
+                          <p class="mc-h">진행 중인 장례케어 1건</p>
+                          <div class="mc-card"><em class="mc-tag">D-1 발인</em><b>박○○ 차장 · 부친상</b><div class="mc-info"><span><small>빈소</small>○○추모공원 2호</span><span><small>입관</small>화 14:00</span><span><small>발인</small>수 07:00</span></div></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="hero-layer hero-layer-phone overlay-stack-item">
+                      <div class="phone">
+                        <div class="phone-screen">
+                          <div class="ps-status"><span>9:41</span><span class="ps-status-icons"></span></div>
+                          <div class="ps-home-head"><small>○○주식회사</small><b>김○○님</b></div>
+                          <p class="ps-label">내가 받을 수 있는 경조사 복지</p>
+                          <div class="ps-welfare"><span class="ps-welfare-icon" data-kind="care"><svg viewBox="0 0 24 24"><path d="M12 3.5c-2.1 0-3.4 1.5-3.4 3.3 0 1.4.8 2.9 1.9 4.4L6.6 19.5h2.6l2.8-5.1 2.8 5.1h2.6l-3.9-8.3c1.1-1.5 1.9-3 1.9-4.4 0-1.8-1.3-3.3-3.4-3.3z"/></svg></span><div><b>장례</b><small>장례케어·부고장·화환·부의금</small></div><i>›</i></div>
+                          <div class="ps-welfare"><span class="ps-welfare-icon" data-kind="wedding"><svg viewBox="0 0 24 24"><path d="M11 10.4C9.3 7.9 6.5 5.7 4.4 6.4c-1.7.6-1.6 6.1.2 7 1.7.8 4.7-.7 6.4-3zM13 10.4c1.7-2.5 4.5-4.7 6.6-4 1.7.6 1.6 6.1-.2 7-1.7.8-4.7-.7-6.4-3zM11.1 8.7h1.8a1 1 0 0 1 1 1v2.2a1 1 0 0 1-1 1h-1.8a1 1 0 0 1-1-1V9.7a1 1 0 0 1 1-1zM10.7 13.4l-3.2 6.2 2.5-.2 2-3.6zM13.3 13.4l3.2 6.2-2.5-.2-2-3.6z"/></svg></span><div><b>결혼 축하</b><small>축의금·화환</small></div><i>›</i></div>
+                          <p class="ps-label">진행 중인 신청</p>
+                          <div class="ps-track"><div class="ps-track-head"><b>부친상 · 장례케어</b><em>승인 완료</em></div><ol class="ps-track-steps"><li data-on></li><li data-on></li><li data-on></li><li></li></ol><small class="ps-track-note">부고장 발송까지 완료</small></div>
+                          <p class="ps-label">알림</p>
+                          <ul class="ps-feed"><li><b>부고장을 보냈어요</b></li><li><b>근조화환 배송 완료</b></li></ul>
+                          <p class="ps-note">문의 · 인사총무팀</p>
+                          <div class="ps-tabbar"><span data-on><svg viewBox="0 0 24 24"><path d="M4 10.8 12 4l8 6.8v8.7a.5.5 0 0 1-.5.5H15v-5.5H9V20H4.5a.5.5 0 0 1-.5-.5z"/></svg>홈</span><span><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6.5 4h11A1.5 1.5 0 0 1 19 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4zM8 8v1.8h8V8zm0 3.6v1.8h8v-1.8zm0 3.6V17h5v-1.8z"/></svg>내 복지</span><span><svg viewBox="0 0 24 24"><path d="M12 4a3.8 3.8 0 1 1 0 7.6A3.8 3.8 0 0 1 12 4zM4.5 20c0-3.5 3.4-6.2 7.5-6.2s7.5 2.7 7.5 6.2z"/></svg>내 정보</span></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="hero-layer hero-layer-chip overlay-stack-item"><span class="chip-check"></span>승인 완료</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="mock-caption">화면 예시</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- L2 Services -->
+    <section class="section services-section" id="services" data-surface="navy" aria-labelledby="services-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack reveal">
+          <p class="eyebrow">서비스</p>
+          <h2 id="services-title">경조사 소식 한&nbsp;통에 몰리던&nbsp;일을,<br class="break-wide"> <span class="accent">한곳에서</span>&nbsp;처리해요.</h2>
+          <p class="lede">사내 부고 알림, 화환 주문, 부의금 송금, 결재와 증빙 보관까지, 담당자가 흩어진 채로 챙기던 일을 고운마음이 한&nbsp;흐름으로&nbsp;묶어요.</p>
+        </header>
+        <div class="bento-wrap">
+          <ul class="bento ram-grid" role="list">
+            <li class="bento-tile bento-tile-feature reveal" data-linked>
+              <h3>장례케어</h3>
+              <p>장례가 나면 24시간 접수해요. 장례지도사 배정부터 발인까지 기업 혜택으로 이용할 수 있어요.</p>
+              <ol class="care-steps" aria-hidden="true"><li>접수</li><li>장례지도사 배정</li><li>발인</li></ol>
+              <a class="text-link" href="#care">장례케어 자세히 보기 <span aria-hidden="true">→</span></a>
+            </li>
+            <li class="bento-tile reveal">
+              <svg class="tile-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="13" r="5"/><circle cx="15" cy="13" r="5"/><path d="M10.5 4.5 12 6l1.5-1.5"/></svg>
+              <h3>결혼 축하</h3>
+              <p>축의금은 예식 당일에 보내고, 축하화환은 날짜에 맞춰 준비해요.</p>
+            </li>
+            <li class="bento-tile reveal">
+              <svg class="tile-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9.5" r="5.5"/><circle cx="12" cy="9.5" r="2.2"/><path d="M9.5 15 8 21M14.5 15 16 21"/></svg>
+              <h3>화환</h3>
+              <p>근조화환과 축하화환을 회사 이름으로 보내고, 배송 사진으로 도착을 확인해요.</p>
+            </li>
+            <li class="bento-tile reveal">
+              <svg class="tile-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg>
+              <h3>부의금·축의금</h3>
+              <p>받는 분 계좌를 확인한 뒤 회사 이름으로 보내요.</p>
+            </li>
+            <li class="bento-tile reveal">
+              <svg class="tile-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M9.5 8h5M9.5 11h5M9.5 14h3"/></svg>
+              <h3>모바일 부고장</h3>
+              <p>회사 로고가 들어간 부고장을 만들고, 증빙 파일로 정보를 자동으로 채워요.</p>
+            </li>
+            <li class="bento-tile reveal">
+              <svg class="tile-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H10l-4.5 3.5V16H4z"/><path d="M8 9h8M8 12h5"/></svg>
+              <h3>사내 부고 알림</h3>
+              <p>임직원이 정한 수신인과 관리자가 고른 본부·팀에 문자로 알려요.</p>
+            </li>
+          </ul>
+        </div>
+        <p class="section-note reveal">거래처 경조사에도 회사 이름으로 화환과 경조금을 보낼 수 있어요.</p>
+      </div>
+    </section>
+
+    <!-- L3 Flow (Scroll-driven Story) -->
+    <section class="section flow-section" id="flow" data-surface="light" aria-labelledby="flow-title">
+      <div class="content-limiter">
+        <header class="section-head stack reveal">
+          <p class="eyebrow">이용 흐름</p>
+          <h2 id="flow-title">신청하고 승인하면, <span class="accent">나머지는&nbsp;<span class="brand-word">고운마음</span>이</span> 해요.</h2>
+          <p class="lede">장례를 예로 들었어요. 결혼 축하도 같은 순서로 진행해요.</p>
+        </header>
+      </div>
+      <div class="scroll-story" data-story>
+        <div class="story-controls content-limiter">
+          <div class="cluster">
+            <a class="pill-control" href="#console">이용 흐름 건너뛰기 <span aria-hidden="true">↓</span></a>
+            <button class="pill-control" type="button" data-story-toggle aria-pressed="false" hidden>애니메이션 없이 읽기</button>
+          </div>
+        </div>
+        <div class="story-stage" data-story-stage>
+          <ol class="story-list" role="list">
+          <li class="story-panel" data-story-panel>
+            <div class="story-text">
+              <p class="story-number" aria-hidden="true">01 <span>/ 05</span></p>
+              <h3>임직원은 휴대폰으로 신청해요.</h3>
+              <p>장례 또는 결혼을 고르고 관계를 선택해요. 증빙 서류는 나중에 올려도 되고, 승인 전에는 직접 취소할 수 있어요.</p>
+            </div>
+            <div class="story-art" aria-hidden="true">
+              <div class="phone"><div class="phone-screen" data-screen="apply">
+                <div class="ps-status"><span>9:41</span><span class="ps-status-icons"></span></div>
+                <div class="ps-appbar"><span class="ps-back">‹</span><b>경조사 신청</b></div>
+                <div class="ps-body">
+                  <p class="ps-label">어떤 경조사인가요</p>
+                  <div class="ps-seg"><span data-on>장례</span><span>결혼</span></div>
+                  <p class="ps-label">관계</p>
+                  <div class="ps-chips"><span>본인·배우자</span><span data-on>부모</span><span>자녀</span><span>조부모·형제자매</span></div>
+                  <p class="ps-label">고인 성함</p>
+                  <div class="ps-input">김○○</div>
+                  <p class="ps-label">장례식장</p>
+                  <div class="ps-input">○○병원 장례식장 3호실</div>
+                  <p class="ps-label">증빙 서류</p>
+                  <div class="ps-upload"><b>나중에 올리기</b><small>장례를 마친 뒤 내도 돼요</small></div>
+                </div>
+                <div class="ps-cta">신청하기</div>
+              </div></div>
+            </div>
+          </li>
+          <li class="story-panel" data-story-panel>
+            <div class="story-text">
+              <p class="story-number" aria-hidden="true">02 <span>/ 05</span></p>
+              <h3>관리자가 승인하면 바로 시작해요.</h3>
+              <p>신청이 들어오면 관리자에게 알림이 가요. 승인이나 반려 결과는 임직원에게 알려 드리고, 관리자가 직접 신청하면 승인&nbsp;없이&nbsp;진행해요.</p>
+            </div>
+            <div class="story-art" aria-hidden="true">
+              <div class="phone"><div class="phone-screen" data-screen="notify">
+                <div class="ps-status"><span>6:12</span><span class="ps-status-icons"></span></div>
+                <div class="ps-appbar ps-appbar-center"><b>문자 메시지</b></div>
+                <div class="ps-body ps-thread">
+                  <p class="ps-time">오늘 오전 6:12</p>
+                  <div class="ps-bubble"><b>[고운마음]</b> 임직원 김○○님이 경조사를 신청했어요.<br>장례 · 부친상<span class="ps-link">신청 확인하기 ›</span></div>
+                  <div class="ps-request"><div class="ps-request-rows"><span><small>신청자</small>김○○ · 영업팀</span><span><small>경조사</small>장례 · 부친상</span><span><small>증빙</small>나중에 제출</span></div><div class="ps-request-actions"><span>반려</span><span data-on>승인</span></div></div>
+                  <div class="ps-approve"><span class="ps-check"></span><div><b>승인 완료</b><small>관리자 이○○ · 오전 6:20</small></div></div>
+                  <p class="ps-note">승인 결과는 김○○님에게도 알려&nbsp;드려요.</p>
+                </div>
+              </div></div>
+            </div>
+          </li>
+          <li class="story-panel" data-story-panel>
+            <div class="story-text">
+              <p class="story-number" aria-hidden="true">03 <span>/ 05</span></p>
+              <h3>증빙 파일 하나로 부고장을 채워요.</h3>
+              <p>파일을 올리면 고인·상주·빈소·발인·장지 정보를 자동으로 채우고, 회사 로고가 들어간 모바일 부고장을 만들어요.</p>
+            </div>
+            <div class="story-art" aria-hidden="true">
+              <div class="phone"><div class="phone-screen" data-screen="obituary">
+                <div class="ps-status"><span>9:41</span><span class="ps-status-icons"></span></div>
+                <div class="ps-obit-head"><span class="ps-logo">OO</span><div><b>○○주식회사</b><small>임직원 가족 부고 안내</small></div></div>
+                <div class="ps-body ps-obit">
+                  <p class="ps-obit-kicker">부고</p>
+                  <p class="ps-obit-name" data-fill="0">故 김○○ 님</p>
+                  <p class="ps-obit-lead">영업팀 김○○ 님의 부친께서 별세하셨기에 삼가 알려드립니다.</p>
+                  <dl class="ps-obit-rows">
+                    <div data-fill="1"><dt>상주</dt><dd>김○○ 외 2명</dd></div>
+                    <div data-fill="2"><dt>빈소</dt><dd>○○병원 장례식장 3호실</dd></div>
+                    <div data-fill="3"><dt>발인</dt><dd>9월 23일 (수) 오전 7시</dd></div>
+                    <div data-fill="4"><dt>장지</dt><dd>○○추모공원</dd></div>
+                  </dl>
+                  <div class="ps-obit-note"><small>마음 전하실 곳</small><b>상주 김○○ · ○○은행</b></div>
+                  <div class="ps-obit-message"><small>조문 메시지</small><p>삼가 고인의 명복을 빕니다.</p><small>영업본부 일동</small></div>
+                  <div class="ps-obit-actions"><span>빈소 위치 보기</span><span>조문 메시지 남기기</span></div>
+                </div>
+              </div></div>
+            </div>
+          </li>
+          <li class="story-panel" data-story-panel>
+            <div class="story-text">
+              <p class="story-number" aria-hidden="true">04 <span>/ 05</span></p>
+              <h3>정한 사람에게만 알려요.</h3>
+              <p>임직원이 지정한 수신인에게는 꼭 보내고, <span class="nobr">본부·팀과</span> 추가 수신인은 관리자가 골라서 문자로&nbsp;보내요.</p>
+            </div>
+            <div class="story-art" aria-hidden="true">
+              <div class="phone"><div class="phone-screen" data-screen="recipients">
+                <div class="ps-status"><span>9:41</span><span class="ps-status-icons"></span></div>
+                <div class="ps-appbar"><span class="ps-back">‹</span><b>사내 부고 알림</b></div>
+                <div class="ps-body">
+                  <p class="ps-label">받는 사람</p>
+                  <ul class="ps-checklist">
+                    <li data-on data-locked><span class="ps-box"></span><div><b>지정 수신인</b><small>임직원이 지정 · 3명</small></div><em>필수</em></li>
+                    <li data-on><span class="ps-box"></span><div><b>영업본부</b><small>관리자 선택 · 24명</small></div></li>
+                    <li data-on><span class="ps-box"></span><div><b>경영지원팀</b><small>관리자 선택 · 8명</small></div></li>
+                    <li><span class="ps-box"></span><div><b>추가 수신인</b><small>선택하지 않음</small></div></li>
+                  </ul>
+                  <p class="ps-note">문자와 부고장 링크로 보내요.</p>
+                </div>
+                <div class="ps-cta">35명에게 보내기</div>
+              </div></div>
+            </div>
+          </li>
+          <li class="story-panel" data-story-panel>
+            <div class="story-text">
+              <p class="story-number" aria-hidden="true">05 <span>/ 05</span></p>
+              <h3>화환과 부의금이 회사&nbsp;이름으로 도착해요.</h3>
+              <p>근조화환은 빈소로 보내고 배송 사진을 남겨요. 부의금은 결제 즉시 보내고, 모든 내역은 현황에 바로&nbsp;쌓여요.</p>
+            </div>
+            <div class="story-art" aria-hidden="true">
+              <div class="phone"><div class="phone-screen" data-screen="delivered">
+                <div class="ps-status"><span>9:41</span><span class="ps-status-icons"></span></div>
+                <div class="ps-appbar ps-appbar-center"><b>진행 현황</b></div>
+                <div class="ps-body">
+                  <div class="ps-photo">
+                    <svg class="ps-wreath" viewBox="0 0 120 90">
+                      <path class="ps-wreath-stand" d="M53 58 45 86M67 58l8 28M60 60v26"/>
+                      <circle class="ps-wreath-leaves" cx="60" cy="36" r="24.6"/>
+                      <circle class="ps-wreath-body" cx="60" cy="36" r="20"/>
+                      <circle class="ps-wreath-bloom" cx="60" cy="36" r="24.2"/>
+                      <circle class="ps-wreath-bloom ps-wreath-bloom-mid" cx="60" cy="36" r="20"/>
+                      <circle class="ps-wreath-bloom ps-wreath-bloom-inner" cx="60" cy="36" r="16.2"/>
+                      <circle class="ps-wreath-edge" cx="60" cy="36" r="15"/>
+                      <path class="ps-ribbon" d="M44 44h7v42h-7zM69 44h7v42h-7z"/>
+                      <text class="ps-ribbon-text" x="72.5" y="46">삼가 고인의 명복을 빕니다</text>
+                      <text class="ps-ribbon-text" x="47.5" y="46">○○주식회사 임직원 일동</text>
+                    </svg>
+                    <span class="ps-photo-tag">오전 9:32 · 빈소 도착</span>
+                  </div>
+                  <div class="ps-done"><span class="ps-check"></span><div><b>근조화환 배송 완료</b><small>○○병원 장례식장 3호실</small></div></div>
+                  <div class="ps-done"><span class="ps-check"></span><div><b>부의금 전달 완료</b><small>회사 이름으로 송금</small></div></div>
+                  <div class="ps-done"><span class="ps-check"></span><div><b>기록 완료</b><small>신청 · 승인 · 발송 내역</small></div></div>
+                </div>
+              </div></div>
+            </div>
+          </li>
+          </ol>
+          <div class="story-meter" data-story-meter aria-hidden="true"></div>
+        </div>
+      </div>
+      <p class="story-footnote content-limiter">화면은 예시예요. <span class="nobr">부의금·축의금</span> 송금은 결제대행사 심사를 마친 뒤부터 쓸 수 있어요.</p>
+    </section>
+
+    <!-- L4 Admin console -->
+    <section class="section console-section" id="console" data-surface="navy" aria-labelledby="console-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack reveal">
+          <p class="eyebrow">관리자 콘솔</p>
+          <h2 id="console-title">회사 경조 규정을 한&nbsp;번&nbsp;설정하면,<br class="break-wide"> <span class="accent">담당자의&nbsp;일이 줄어요.</span></h2>
+          <p class="lede">승인부터 결제, 발송, 기록까지 한&nbsp;화면에서&nbsp;해요.</p>
+        </header>
+        <figure class="console-figure">
+          <div class="console-scene frame" aria-hidden="true">
+            <div class="console-plane" data-console-plane>
+              <div class="console-mock">
+                <div class="cm-side">
+                  <div class="cm-brand"><b>고운마음</b><small>○○주식회사</small></div>
+                  <p class="cm-grp">운영</p><span data-on>홈</span><span>복지 신청</span><span>발송 내역</span>
+                  <p class="cm-grp">발송하기</p><span>화환</span><span>부의금·축의금</span><span>부고장</span>
+                  <p class="cm-grp">설정</p><span>복지 정책</span><span>임직원 명단</span><span>권한</span>
+                </div>
+                <div class="cm-main">
+                  <div class="cm-top"><b>홈</b><em>Admin</em></div>
+                  <div class="cm-content">
+                    <p class="cm-hi">안녕하세요, 김○○님 <small>9월 22일 (화)</small></p>
+                    <div class="cm-kpis"><span><small>이번 달 신청</small><b>4건</b></span><span><small>승인 대기</small><b>1건</b></span><span><small>발송 완료</small><b>12건</b></span><span><small>거래처 발송</small><b>2건</b></span></div>
+                    <div class="cm-alert"><i>!</i><div><b>증빙 승인 대기 1건</b><small>이○○ 사원 · 결혼 축하 — 증빙을 검토하고 승인해 주세요.</small></div><span class="cm-btn">검토하기</span></div>
+                    <div class="cm-grid">
+                      <div class="cm-card">
+                        <p class="cm-h">진행 중인 장례케어 1건</p>
+                        <em class="cm-tag">D-1 발인</em>
+                        <b class="cm-name">박○○ 차장 · 부친상</b>
+                        <small class="cm-meta">영업본부 · 故 박○○님</small>
+                        <div class="cm-info"><span><small>빈소</small>○○추모공원 2호</span><span><small>입관</small>9/22 (화) 14:00</span><span><small>발인</small>9/23 (수) 07:00</span></div>
+                        <div class="cm-progress"><span data-on>부고장 발송</span><span data-on>근조화환 배송</span><span data-on>부의금 송금</span><span>증빙 제출</span></div>
+                      </div>
+                      <div class="cm-card">
+                        <p class="cm-h">다가오는 일정</p>
+                        <div class="cm-upc"><span>9/23</span><div><b>발인 · 박○○ 차장 부친상</b><small>○○추모공원 2호 · 07:00</small></div></div>
+                        <div class="cm-upc"><span>10/10</span><div><b>결혼 · 이○○ 사원</b><small>증빙 검토 대기</small></div></div>
+                        <div class="cm-upc"><span>10/17</span><div><b>결혼 · 최○○ 대리</b><small>축의금 · 축하화환 예정</small></div></div>
+                      </div>
+                    </div>
+                    <div class="cm-quick"><span>화환 보내기</span><span>부의금·축의금</span><span>부고장 만들기</span><span>임직원 등록</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="mock-caption">화면 예시</figcaption>
+        </figure>
+        <ul class="feature-list ram-grid" role="list">
+          <li class="feature-item reveal"><h3>복지 정책</h3><p>경조사마다 지원 항목과 승인·증빙 여부를, 관계마다 지원 금액을 정해요.</p></li>
+          <li class="feature-item reveal"><h3>임직원 명단</h3><p>엑셀 파일로 한 번에 등록하고, 퇴사 처리하면 바로 접속을 막아요.</p></li>
+          <li class="feature-item reveal"><h3>권한</h3><p>Owner · Admin · Viewer로 나눠서 승인과 결제를 맡길 사람을 정해요.</p></li>
+          <li class="feature-item reveal"><h3>기록</h3><p>신청과 발송 내역이 자동으로 쌓여서 따로 정리하지 않아도 돼요.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- L5 장례케어 -->
+    <section class="section care-section" id="care" data-surface="light" aria-labelledby="care-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack reveal">
+          <p class="eyebrow">장례케어</p>
+          <h2 id="care-title">장례가 나면, 임직원과 가족은 장례케어를 <span class="accent">기업&nbsp;혜택으로</span> 이용해요.</h2>
+          <p class="lede">기업&nbsp;제휴가격은 개인 일반가보다 <strong class="lede-figure">100만원&nbsp;이상</strong>&nbsp;낮아요.</p>
+        </header>
+        <ol class="mechanic switcher" role="list">
+          <li class="mechanic-step switcher-item reveal"><span class="mechanic-num" aria-hidden="true">1</span><p>회사가 고운마음을 도입해요.</p></li>
+          <li class="mechanic-step switcher-item reveal"><span class="mechanic-num" aria-hidden="true">2</span><p>장례가 나면 24시간 접수해요.</p></li>
+          <li class="mechanic-step switcher-item reveal"><span class="mechanic-num" aria-hidden="true">3</span><p>장례를 마친 뒤 기업&nbsp;제휴가격으로 결제해요.</p></li>
+        </ol>
+        <div class="care-detail switcher">
+          <div class="care-includes switcher-item stack">
+            <h3>포함되는 것</h3>
+            <ul class="includes-list" role="list">
+              <li>장례지도사와 염습상례사</li>
+              <li>입관용품과 장례용품</li>
+              <li>상품에 따라 빈소관리사와 장의 차량</li>
+            </ul>
+          </div>
+          <div class="care-products switcher-item stack">
+            <p>조문 규모에 따라 보급형&nbsp;· 일반형&nbsp;· 고급형&nbsp;· 무빈소형 중에서 고르고, 기업&nbsp;제휴가격은 <strong class="care-figure">199만원부터</strong>예요. 상품별 구성은 <a class="text-link" href="#products">바로 아래 상조상품</a>에서 볼&nbsp;수 있어요.</p>
+            <div class="cluster"><a class="button button-primary button-large" href="#apply" data-interest="care">우리 회사 혜택 상담하기</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- L5b 상조상품 (owner request 2026-09-29): the four B2B tiers exactly as published in the 소개서 pp. 8–9.
+         Sources per value: docs/product-sources.md. No 일반가 amounts, no unbuilt digital items. -->
+    <section class="section products-section" id="products" data-surface="navy" aria-labelledby="products-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack reveal">
+          <p class="eyebrow">상조상품</p>
+          <h2 id="products-title">조문 규모에 맞춰 <span class="accent">네&nbsp;가지 상품</span> 중에서 골라요.</h2>
+          <p class="lede">모든 상품을 기업&nbsp;제휴가격으로 이용하고, 장례를 마친 뒤&nbsp;결제해요.</p>
+        </header>
+        <div class="plans-wrap">
+          <ul class="plans" role="list">
+            <li class="plan reveal" aria-labelledby="plan-basic">
+              <h3 class="plan-name" id="plan-basic">보급형</h3>
+              <p class="plan-price"><span class="plan-price-label">기업 제휴가격</span><span class="plan-figure">199<span class="plan-unit">만원</span></span></p>
+              <p class="plan-fit">조문객 50~150명</p>
+              <dl class="plan-spec">
+                <div><dt>빈소관리사</dt><dd>2명</dd></div>
+                <div><dt>수의</dt><dd>가진수의</dd></div>
+                <div><dt>봉안함</dt><dd>황토 봉안함</dd></div>
+                <div><dt>상복</dt><dd>남·녀 각 3벌</dd></div>
+                <div><dt>차량</dt><dd>장의버스 왕복 150km 또는 앰뷸런스 관내</dd></div>
+                <div><dt>장식·헌화</dt><dd>헌화 30송이</dd></div>
+                <div><dt>시설·화장</dt><dd>별도</dd></div>
+              </dl>
+            </li>
+            <li class="plan reveal" aria-labelledby="plan-standard">
+              <h3 class="plan-name" id="plan-standard">일반형</h3>
+              <p class="plan-price"><span class="plan-price-label">기업 제휴가격</span><span class="plan-figure">299<span class="plan-unit">만원</span></span></p>
+              <p class="plan-fit">조문객 150~300명</p>
+              <dl class="plan-spec">
+                <div><dt>빈소관리사</dt><dd>4명</dd></div>
+                <div><dt>수의</dt><dd>저마수의</dd></div>
+                <div><dt>봉안함</dt><dd>황토 봉안함</dd></div>
+                <div><dt>상복</dt><dd>남·녀 각 5벌</dd></div>
+                <div><dt>차량</dt><dd>장의버스·리무진 각 왕복 150km</dd></div>
+                <div><dt>장식·헌화</dt><dd>헌화 30송이</dd></div>
+                <div><dt>시설·화장</dt><dd>별도</dd></div>
+              </dl>
+            </li>
+            <li class="plan reveal" aria-labelledby="plan-premium">
+              <h3 class="plan-name" id="plan-premium">고급형</h3>
+              <p class="plan-price"><span class="plan-price-label">기업 제휴가격</span><span class="plan-figure">399<span class="plan-unit">만원</span></span></p>
+              <p class="plan-fit">조문객 300명 이상</p>
+              <dl class="plan-spec">
+                <div><dt>빈소관리사</dt><dd>6명</dd></div>
+                <div><dt>수의</dt><dd>대마수의(멧베 포함)</dd></div>
+                <div><dt>봉안함</dt><dd>3중 진공 봉안함</dd></div>
+                <div><dt>상복</dt><dd>필요한 만큼</dd></div>
+                <div><dt>차량</dt><dd>장의버스·리무진 전국</dd></div>
+                <div><dt>장식·헌화</dt><dd>3단 제단 장식 · 입관 꽃장식 · 헌화 50송이</dd></div>
+                <div><dt>시설·화장</dt><dd>별도</dd></div>
+              </dl>
+            </li>
+            <li class="plan reveal" aria-labelledby="plan-nobinso">
+              <h3 class="plan-name" id="plan-nobinso">무빈소형</h3>
+              <p class="plan-price"><span class="plan-price-label">기업 제휴가격</span><span class="plan-figure">299<span class="plan-unit">만원</span></span></p>
+              <p class="plan-fit">빈소 없이 가족 중심으로</p>
+              <dl class="plan-spec">
+                <div><dt>빈소관리사</dt><dd>없음</dd></div>
+                <div><dt>수의</dt><dd>저마수의</dd></div>
+                <div><dt>봉안함</dt><dd>진공 봉안함</dd></div>
+                <div><dt>상복</dt><dd>남·녀 각 1벌</dd></div>
+                <div><dt>차량</dt><dd>장의버스 왕복 100km · 앰뷸런스 관내</dd></div>
+                <div><dt>장식·헌화</dt><dd>없음</dd></div>
+                <div><dt>시설·화장</dt><dd>장례식장 비용 대납 · 관내 화장장 비용 대납</dd></div>
+              </dl>
+            </li>
+          </ul>
+        </div>
+        <div class="plans-notes stack">
+          <p class="plans-common">모든 상품에 장례지도사 1명 · 염습상례사 1명 · 입관용품과 장례용품 일체가 들어&nbsp;있어요.</p>
+          <p class="section-note">따로 드는 비용: 장지 비용 · 식사와 접객 비용 · 장례식장 사용료와 화장장 비용(무빈소형은 대납 범위를 넘는&nbsp;금액)</p>
+          <p class="section-note">※ 제단 장식을 설치할 수 없는 장례식장에서는 제단 지원금으로 대신해요. 무빈소형의 대납 범위, 관외 화장 비용 같은 세부 조건은 상담할 때 알려&nbsp;드려요.</p>
+          <p class="plans-negotiable">세부내역은 상품팀과 협의 가능</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- L6 비용 (no motion: money claims are never animated) -->
+    <section class="section cost-section" id="cost" data-surface="navy" aria-labelledby="cost-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack">
+          <p class="eyebrow">비용</p>
+          <h2 id="cost-title">회사는 도입비·이용료 없이 쓰고, 임직원은 이용할&nbsp;때만 결제해요.</h2>
+          <p class="lede">미리 내는 돈도, 매달 내는 돈도 없어요.</p>
+        </header>
+        <div class="cost-table-wrap">
+          <table class="cost-table" role="table">
+            <caption>누가 무엇을 부담하나요</caption>
+            <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">누가</th><th scope="col" role="columnheader">무엇을 부담하나요</th></tr></thead>
+            <tbody role="rowgroup">
+              <tr role="row" data-row="company"><th scope="row" role="rowheader">회사</th><td role="cell">도입비·이용료 <strong class="cost-zero">0원</strong></td></tr>
+              <tr role="row"><th scope="row" role="rowheader">임직원·가족</th><td role="cell">장례케어를 이용할 때 기업&nbsp;제휴가격으로 결제해요.</td></tr>
+              <tr role="row"><th scope="row" role="rowheader">회사 경조 예산</th><td role="cell">화환·<span class="nobr">부의금·축의금</span>은 지금처럼 회사 경조 규정에 따라 결제해요.</td></tr>
+            </tbody>
+          </table>
+          <div class="cost-notes stack">
+            <p class="money-qualifier">※ 장례케어 대금은 이용한 임직원 또는 가족이 기업&nbsp;제휴가격으로 결제하고, 화환·<span class="nobr">부의금·축의금</span>은 회사 경조 규정에 따라 회사가&nbsp;결제해요.</p>
+            <p class="section-note"><span class="nobr">부의금·축의금</span> 송금 수수료 같은 세부 조건은 도입 상담에서 알려&nbsp;드려요.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- L7 운영사 · 보안 (the navy band) -->
+    <section class="section operator-section" id="operator" data-surface="navy" aria-labelledby="operator-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack reveal">
+          <div class="operator-kicker">
+            <!-- Official 아이리스 logo from https://iriscorp.co.kr/images/logo.svg, copied unchanged (no recolour, redraw or distortion). -->
+            <img class="operator-logo" src="assets/brand/iris-logo.svg" width="74" height="32" alt="아이리스" decoding="async" data-operator-line>
+            <p class="eyebrow" data-operator-swap data-alt="보안·개인정보">운영사</p>
+          </div>
+          <h2 id="operator-title" data-operator-swap data-alt="가족 소식은 정한 사람에게만, 정한 기간에만 공유해요.">장례 현장을 아는 <br>아이리스가 설계했어요.</h2>
+          <p class="lede"><span data-operator-sentence>아이리스는 2021년부터 장례식장 운영 시스템과 모바일 부고 서비스를 만들어 왔어요. </span><span data-operator-swap data-alt="로그인부터 권한, 부고장 공개 기간까지 꼭 필요한 만큼만 열어 두었어요.">고운마음은 한국장례협회와 함께 검증한 서비스예요.</span></p>
+        </header>
+        <!-- E6 odometer: the final figures are the real DOM text; scripts/odometer.js adds an aria-hidden digit roll once. -->
+        <div class="proof" data-operator-block>
+          <ul class="stat-list ram-grid" role="list" data-odometer>
+            <li class="stat"><span class="stat-figure"><span class="stat-value" data-lead="1"><span class="stat-digits">1,500</span></span><span class="stat-unit">명+</span></span> <span class="stat-rule" aria-hidden="true"></span><span class="stat-label">장례지도사 네트워크</span></li>
+            <li class="stat"><span class="stat-figure"><span class="stat-value" data-lead="1"><span class="stat-digits">100</span></span><span class="stat-unit">개+</span></span> <span class="stat-rule" aria-hidden="true"></span><span class="stat-label">전국 수행 현장</span></li>
+            <li class="stat"><span class="stat-figure"><span class="stat-value" data-lead="2"><span class="stat-digits">24</span></span><span class="stat-unit">시간</span></span> <span class="stat-rule" aria-hidden="true"></span><span class="stat-label">장례 접수</span></li>
+          </ul>
+        </div>
+        <ul class="trust-list ram-grid" role="list">
+          <li class="trust-item reveal"><h3>휴대폰 인증 로그인</h3><p>아이디와 비밀번호 없이 휴대폰 번호 인증으로 로그인해요.</p></li>
+          <li class="trust-item reveal"><h3>퇴사 즉시 차단</h3><p>퇴사 처리하면 바로 로그아웃되고 다시 접속할 수 없어요.</p></li>
+          <li class="trust-item reveal"><h3>정한 사람에게만</h3><p>부고는 임직원이 지정한 수신인과 관리자가 고른 범위에만 보내요.</p></li>
+          <li class="trust-item reveal"><h3>공개 기간 제한</h3><p>부고장은 정해진 기간이 지나면 닫혀요.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- L8 도입 절차 -->
+    <section class="section onboarding-section" id="onboarding" data-surface="navy" aria-labelledby="onboarding-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack reveal">
+          <p class="eyebrow">도입</p>
+          <h2 id="onboarding-title">도입 문의부터 오픈까지, <span class="accent">네&nbsp;단계로</span> 준비해요.</h2>
+          <p class="lede">담당자는 회사 경조 규정과 임직원 명단만 준비하면&nbsp;돼요.</p>
+        </header>
+        <ol class="steps ram-grid" role="list">
+          <li class="step line-up reveal"><span class="step-num" aria-hidden="true">01</span><h3>도입 문의</h3><p>대표번호로 문의하시면 고운마음 운영팀이 안내해 드려요.</p></li>
+          <li class="step line-up reveal"><span class="step-num" aria-hidden="true">02</span><h3>회사 등록</h3><p>회사 정보를 등록하고 관리자 계정을 만들어&nbsp;드려요.</p></li>
+          <li class="step line-up reveal"><span class="step-num" aria-hidden="true">03</span><h3>기본 설정</h3><p>복지 정책과 부고장을 설정하고 임직원 명단을 올려요.</p></li>
+          <li class="step line-up reveal"><span class="step-num" aria-hidden="true">04</span><h3>오픈</h3><p>임직원에게 안내 문자가 가고, 그날부터 신청을 받아요.</p></li>
+        </ol>
+        <div class="prep sidebar">
+          <div class="prep-body sidebar-primary">
+            <h3 class="prep-title">준비할 것</h3>
+            <ul class="chip-list cluster" role="list"><li>사업자등록증</li><li>임직원 명단</li><li>회사 경조 규정</li><li>회사 로고</li></ul>
+          </div>
+          <div class="prep-action sidebar-secondary cluster"><a class="button button-primary button-large" href="#apply">도입 문의하기</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- L9 FAQ -->
+    <section class="section faq-section" id="faq" data-surface="light" aria-labelledby="faq-title">
+      <div class="content-limiter">
+        <div class="faq-layout sidebar">
+          <header class="faq-head sidebar-secondary stack">
+            <h2 id="faq-title">자주 묻는 질문</h2>
+          </header>
+          <div class="faq-list sidebar-primary">
+            <details class="faq-item"><summary>정말 회사가 내는 비용이 없나요?</summary><div class="faq-answer"><p>네, 도입비·이용료 없이 고운마음을 쓸 수 있어요. 장례케어 대금은 이용한 임직원 또는 가족이 기업&nbsp;제휴가격으로 결제하고, 회사가 보내는 화환과 <span class="nobr">부의금·축의금</span>은 지금처럼 회사 경조 규정에 따라 회사가&nbsp;결제해요.</p></div></details>
+            <details class="faq-item"><summary>장례케어 혜택은 얼마인가요?</summary><div class="faq-answer"><p>임직원과 가족은 개인 일반가보다 100만원 이상 낮은 기업&nbsp;제휴가격으로 장례케어를 이용할 수 있어요. 조문 규모에 따라 상품을 고르고, 기업&nbsp;제휴가격은 199만원부터예요.</p></div></details>
+            <details class="faq-item"><summary>새벽이나 주말에 장례가 나면 어떻게 하나요?</summary><div class="faq-answer"><p>장례 접수는 24시간 받아요. 회사가 지원하는 부고장·화환·부의금은 관리자가 승인한 뒤에 진행하고, 증빙 서류는 장례를 마친 뒤에 내도 돼요.</p></div></details>
+            <details class="faq-item"><summary>적용 대상은 누가 정하나요?</summary><div class="faq-answer"><p>회사가 정해요. 경조사마다 지원 항목과 승인·증빙 여부를, 관계마다 적용 범위와 지원 금액을 회사 규정에 맞게 설정할 수 있어요.</p></div></details>
+            <details class="faq-item"><summary>임직원 명단은 어떻게 등록하나요?</summary><div class="faq-answer"><p>엑셀 파일로 한 번에 올리거나 한 명씩 등록해요. 임직원은 아이디 없이 휴대폰 번호 인증으로 로그인해요.</p></div></details>
+            <details class="faq-item"><summary>언제부터 쓸 수 있나요?</summary><div class="faq-answer"><p>고운마음은 오픈을 준비하고 있어요. 대표번호로 문의하시면 오픈 일정과 도입 절차를 먼저 알려&nbsp;드릴게요.</p></div></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- L10 사전 이용 신청 (form-flow) -->
+    <section class="section apply-section" id="apply" data-surface="navy" aria-labelledby="apply-title">
+      <div class="content-limiter stack section-stack">
+        <header class="section-head stack">
+          <p class="eyebrow">도입 문의</p>
+          <h2 class="closing-title" id="apply-title">임직원에게 전할 고운 마음, 이제 믿고&nbsp;맡길&nbsp;수 있어요.</h2>
+          <p class="lede">대표번호로 문의하시면 고운마음 운영팀이 오픈 일정과 도입 절차를 알려&nbsp;드릴게요.</p>
+        </header>
+        <div class="apply-layout sidebar">
+          <aside class="apply-aside sidebar-secondary" aria-labelledby="apply-steps-title">
+            <h3 id="apply-steps-title">문의 후 절차</h3>
+            <ol class="apply-steps" role="list">
+              <li>전화 문의</li>
+              <li>운영팀 연락</li>
+              <li>도입 상담과 회사 등록</li>
+            </ol>
+          </aside>
+          <div class="apply-main sidebar-primary">
+            <div class="apply-contact stack" id="apply-contact">
+              <p class="apply-contact-label">도입 문의 대표번호</p>
+              <p class="apply-contact-phone"><a data-config="phone" data-config-link="tel" data-state="set" href="tel:15886764">1588-6764</a></p>
+              <p class="field-hint">전화로 문의해 주시면 고운마음 운영팀이 오픈 일정과 도입 절차를 안내해 드려요.</p>
+              <a class="button button-primary button-large" href="tel:15886764">전화로 문의하기</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- L11 Footer, structured like the iriscorp.co.kr footer: a row of links, then a row of company facts.
+       The facts live in scripts/site-config.js (single source); the markup repeats them for the no-script path and
+       qa/lib/v3-checks.mjs fails if the two ever differ. -->
+  <footer class="site-footer" data-surface="navy">
+    <div class="content-limiter footer-stack">
+      <div class="footer-top">
+        <p class="footer-brand"><img class="footer-lockup" src="assets/brand/gounmaeum-lockup-32-white.svg" width="121" height="32" alt="고운마음" decoding="async"><span class="footer-tagline">기업 경조사 플랫폼</span></p>
+        <nav class="footer-nav" aria-label="약관과 문의">
+          <ul class="footer-links" role="list">
+            <li><a href="#apply">도입 문의</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-operator"><img class="footer-iris" src="assets/brand/iris-logo.svg" width="46" height="20" alt="" decoding="async"><span>운영 <span data-config="operatorName" data-state="set">아이리스</span></span></p>
+        <ul class="footer-facts" role="list">
+          <li>사업자등록번호 <span data-config="bizNo" data-state="set">572-86-02259</span></li>
+          <li>대표이사 <span data-config="ceo" data-state="set">김종근</span></li>
+          <li>주소 <span data-config="address" data-state="set">서울특별시 강남구 강남대로 500, 5F</span></li>
+          <li>대표번호 <a data-config="phone" data-config-link="tel" data-state="set" href="tel:15886764">1588-6764</a></li>
+        </ul>
+        <p class="footer-copy">© 2026 <span data-config="copyrightHolder" data-state="set">IRIS Corporation</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <aside class="mobile-cta" aria-label="도입 문의 바로가기" data-mobile-cta hidden>
+    <a class="button button-primary button-large button-block" href="#apply">도입 문의하기</a>
+  </aside>
+</body>
+</html>

@@ -1,0 +1,134 @@
+/*
+ * Product layer — 이용 흐름 Scroll-driven Story.
+ * Adapted from StyleGallery examples/toss-homepage-clone/story/story.css: product-layer composition
+ * of stack, content-limiter, overlay-stack (grid-area 1 / 1, animated mode only) and local sticky
+ * positioning. Static reading is the default; [data-story-mode="animated"] is set by scripts/motion.js.
+ * Flat visuals: the phones stand on the flat band colour; no halo, glow or veil behind them.
+ */
+@layer product {
+  .scroll-story { position: relative; }
+  .story-controls { padding-block-end: 1.75rem; }
+  .pill-control {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #cfd8e6;
+    border-radius: 999px;
+    color: var(--color-ink);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    gap: 0.375rem;
+    min-block-size: 2.75rem;
+    padding: 0.5rem 1.125rem;
+    text-decoration: none;
+    transition: background-color var(--duration-fast) ease-out, border-color var(--duration-fast) ease-out;
+  }
+  .pill-control:hover { background: var(--color-soft); border-color: #aebbd0; }
+  .pill-control[aria-pressed="true"] { background: var(--color-tint); border-color: #9fb9ee; color: var(--color-blue); }
+
+  .story-stage { position: relative; }
+  .story-list { display: grid; gap: clamp(3rem, 2rem + 5vw, 6rem); }
+  .story-panel {
+    align-items: center;
+    display: grid;
+    gap: clamp(1.75rem, 1rem + 4vw, 5rem);
+    grid-template-columns: minmax(0, 1fr);
+    inline-size: 100%; /* auto margins would otherwise shrink the grid item to fit-content */
+    margin-inline: auto;
+    max-inline-size: calc(var(--content) + var(--gutter) * 2);
+    padding-inline: var(--gutter);
+  }
+  .story-text { display: grid; gap: 0.875rem; max-inline-size: 30rem; min-inline-size: 0; }
+  .story-number { color: var(--color-blue); font-size: 0.9375rem; font-variant-numeric: tabular-nums; font-weight: 800; letter-spacing: 0.02em; }
+  .story-number span { color: var(--color-note); font-weight: 600; }
+  /* balance (as for h2): no lone verb on the last row ("…회사 이름으로 / 도착해요."); the row count is unchanged. */
+  .story-text h3 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem); font-weight: 700; line-height: 1.32; text-wrap: balance; }
+  .story-text p { color: var(--color-ink-2); font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); line-height: 1.75; }
+  .story-art {
+    align-items: center;
+    display: grid;
+    justify-items: center;
+    min-inline-size: 0;
+    padding-block: 1.5rem;
+    position: relative;
+  }
+  .story-art .phone { position: relative; }
+  .story-meter, .persistent-art { display: none; }
+  .story-footnote { color: var(--color-note); font-size: 0.875rem; margin-block-start: clamp(2rem, 1.5rem + 2vw, 3rem); }
+
+  @media (min-width: 48rem) {
+    .story-panel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    /* Static reading (reduced motion, reading mode, short windows): screens as large as the pinned phone. */
+    .story-art .phone { --phone-w: 18rem; }
+  }
+
+  /* ---------- Animated mode (SG story.css, local values) ---------- */
+  .scroll-story[data-story-mode="animated"] { block-size: calc(var(--story-track) + var(--story-controls, 4.5rem)); }
+  [data-story-mode="animated"] .story-stage {
+    block-size: var(--story-height);
+    display: grid;
+    inset-block-start: var(--story-offset);
+    overflow: clip;
+    position: sticky;
+  }
+  /* overlay-stack responsibility, animated mode only */
+  [data-story-mode="animated"] .story-list { block-size: 100%; display: grid; gap: 0; }
+  [data-story-mode="animated"] .story-panel {
+    align-self: stretch;
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    padding-block: 1rem 3rem;
+    transform-origin: 25% 50%;
+  }
+  /* Chapter copy starts on one fixed line in every chapter (offset measured by scripts/motion.js), so "0N / 05"
+     and the heading never jump between chapters; the persistent phone replaces the per-chapter screens. */
+  [data-story-mode="animated"] .story-text { align-self: start; margin-block-start: var(--story-text-top, 10rem); }
+  [data-story-mode="animated"][data-persistent-device] .story-panel .story-art { display: none; }
+  [data-story-mode="animated"] .story-stage::after {
+    background: #d9e2f7;
+    block-size: 3px;
+    border-radius: 3px;
+    content: "";
+    inset: auto max(var(--gutter), calc((100% - var(--content)) / 2)) 1.75rem;
+    position: absolute;
+  }
+  [data-story-mode="animated"] .story-meter {
+    background: var(--color-blue);
+    block-size: 3px;
+    border-radius: 3px;
+    display: block;
+    inset: auto max(var(--gutter), calc((100% - var(--content)) / 2)) 1.75rem;
+    position: absolute;
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 1;
+  }
+
+  /* Persistent phone (adapted from story/persistent-device.mjs). */
+  [data-story-mode="animated"] .persistent-art {
+    align-items: center;
+    display: flex;
+    inset: 0 max(var(--gutter), calc((100% - var(--content)) / 2)) 2.5rem 50%;
+    justify-content: center;
+    perspective: 1200px;
+    pointer-events: none;
+    position: absolute;
+  }
+  .persistent-phone { --phone-w: min(19rem, calc((var(--story-height, 40rem) - 8rem) * 300 / 620)); position: relative; transform-origin: 50% 55%; }
+  .persistent-phone .phone-screen { display: grid; }
+  .persistent-screen { background: #fff; border-radius: inherit; display: flex; flex-direction: column; grid-area: 1 / 1; min-block-size: 0; overflow: hidden; }
+  .persistent-screen [data-fill] { opacity: 0; transition: opacity 240ms ease-out; transition-delay: calc(var(--fill-index, 0) * 60ms); }
+  .persistent-screen [data-fill][data-filled="true"] { opacity: 1; }
+
+  /* Reduced-motion CSS backstop (SG story.css). */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-story[data-story-mode="animated"] { block-size: auto; }
+    [data-story-mode="animated"] .story-stage { block-size: auto; display: block; position: static; }
+    [data-story-mode="animated"] .story-list { display: grid; gap: clamp(3rem, 2rem + 5vw, 6rem); }
+    [data-story-mode="animated"] .story-panel { opacity: 1 !important; transform: none !important; }
+    [data-story-mode="animated"] .persistent-art { display: none; }
+    [data-story-mode="animated"][data-persistent-device] .story-panel .story-art { display: grid; }
+    [data-story-mode="animated"] .story-text { margin-block-start: 0; }
+  }
+}

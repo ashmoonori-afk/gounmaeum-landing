@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" role="img" aria-label="고운마음">
+<title>고운마음</title>
+<style>@media (prefers-color-scheme: dark){.i{fill:#FFFFFF}.s{fill:#2F80ED}}</style>
+<path class="i" fill="#121B33" d="M13 7.101V1.5C13 0.672 12.328 0 11.5 0H1.5C0.672 0 0 0.672 0 1.5V11.5C0 12.328 0.672 13 1.5 13H7.101A5 5 0 0 1 7.101 11H2.5C2.224 11 2 10.776 2 10.5V2.5C2 2.224 2.224 2 2.5 2H10.5C10.776 2 11 2.224 11 2.5V7.101A5 5 0 0 1 13 7.101Z"/>
+<path class="i" fill="#121B33" d="M4 4H9V8H7V6H4Z"/>
+<path class="s" fill="#2458D8" d="M12 8A4 4 0 1 1 12 16A4 4 0 1 1 12 8ZM12 10A2 2 0 1 0 12 14A2 2 0 1 0 12 10Z"/>
+</svg>

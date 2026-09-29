@@ -1,0 +1,146 @@
+/*
+ * Product layer — L1a brand hero (research/landing-v3-spec.md §1): the page's one coloured full-bleed band, flat
+ * #2458D8 (no gradient, glow or blur), with the logo kit's white lockup inlined in index.html and one quiet line.
+ * Layout: the SG `cover` primitive (styles/layout.css) spans the full inline size; min block size = viewport − header.
+ *
+ * E-logo "draw and stamp" (docs/motion-briefs.md; brand/logo/README.md "Motion" 2, once, landing hero):
+ *   card (ㅁ) drawn 0–360 ms (top and left arms, then right and bottom) · ㄱ in pen order, bar then leg, 360–600 ms ·
+ *   seal (ㅇ) stamps 1.04 → 1, 600–840 ms · wordmark fades and rises 840–1200 ms, then rests.
+ * Only clip-path, transform and opacity move (the kit's rule). One CSS animation owns each part's properties, and
+ * every animation fills backwards only: after it ends no animated value remains, so the rested frame is the untouched
+ * kit geometry (qa/lib/v3-checks.mjs compares it with brand/logo/gounmaeum-lockup-white.svg pixel by pixel).
+ * The keyframes run only with [data-js="on"] and prefers-reduced-motion: no-preference; without script or with
+ * reduced motion the rested frame is the first frame. No loop, no replay on scroll.
+ * Start gate (v3 fix round): the animations are created paused and start when the head script sets
+ * [data-logo="play"] — after document.fonts.ready or 800 ms, whichever comes first — so the web-font swap and its
+ * whole-page relayout land before the draw, not inside it (the seal and wordmark animate transform/opacity on SVG
+ * paths, which Chrome runs on the main thread; motion/rendering-and-performance.md "Describe the visible failure").
+ * Paused at time 0 with backwards fill, every part shows its first keyframe (nothing drawn), so the rested logo never
+ * flashes before the draw.
+ */
+@layer product {
+  .brand-hero {
+    --cover-gap: 0;
+    --cover-min: calc(100vh - var(--header-h));
+    --cover-padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    /* Lockup width: 45–55 % of the viewport from 768 to 1440 px, capped at 44rem (37 % at 1920), 84 % at 320 px with
+       25 px sides (≥ the 16 px clear space); on short windows it also shrinks with the available height. */
+    --lockup-w: clamp(15rem, 10rem + 34vw, 44rem);
+    padding-inline: var(--gutter);
+  }
+  @supports (height: 100svh) {
+    .brand-hero {
+      --cover-min: calc(100svh - var(--header-h));
+      --lockup-w: min(clamp(15rem, 10rem + 34vw, 44rem), calc((100svh - var(--header-h)) * 1.45));
+    }
+  }
+  @media (max-width: 47.99rem) {
+    /* No script below 768 px: the menu cannot collapse, so the static header wraps to 65–188 px (measured 320–767 px).
+       The band subtracts the tallest wrap (11.75rem ≈ 188 px, rounded up to 12rem) instead of the 4rem header, so the
+       lockup, the line and the cue stay inside the first screen. */
+    :root:not([data-js="on"]) .brand-hero { --cover-min: calc(100vh - 12rem); }
+    @supports (height: 100svh) {
+      :root:not([data-js="on"]) .brand-hero { --cover-min: calc(100svh - 12rem); }
+    }
+    /* E9 bar over the band (phones): the scroll cue and the lockup keep clear of the bar's reserved height. */
+    html[data-cta-bar="on"] .brand-hero { padding-block-end: calc(var(--cover-padding) + var(--mobile-cta-h) + env(safe-area-inset-bottom, 0px)); }
+  }
+
+  .brand-hero-center {
+    display: grid;
+    /* Clear space = the seal radius (11 of the 54-unit lockup height ≈ 5.35 % of its width) on every side. */
+    gap: calc(var(--lockup-w) * 0.0535 + 0.5rem);
+    justify-items: center;
+    text-align: center;
+  }
+  .brand-hero-lockup {
+    block-size: auto;
+    display: block;
+    inline-size: var(--lockup-w);
+    overflow: visible;
+  }
+  .brand-hero-line {
+    color: #ffffff;
+    font-size: clamp(1.0625rem, 0.9rem + 0.7vw, 1.5rem);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+  }
+  /* Static scroll cue (decorative, aria-hidden): a hairline ending in a small chevron; it never loops. */
+  .brand-hero-cue {
+    background: #a8bff3;
+    block-size: 2.25rem;
+    grid-row: 3;
+    inline-size: 1px;
+    justify-self: center;
+    position: relative;
+  }
+  .brand-hero-cue::after {
+    block-size: 0.5rem;
+    border-block-end: 1px solid #a8bff3;
+    border-inline-end: 1px solid #a8bff3;
+    content: "";
+    inline-size: 0.5rem;
+    inset: auto auto 0 50%;
+    position: absolute;
+    transform: translate(-50%, 0) rotate(45deg);
+    transform-origin: 50% 50%;
+  }
+
+  .gm-seal { transform-box: fill-box; transform-origin: center; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-js="on"] .gm-card { animation: gm-card-draw 360ms linear backwards; }
+    [data-js="on"] .gm-giyeok { animation: gm-giyeok-draw 240ms linear 360ms backwards; }
+    [data-js="on"] .gm-seal { animation: gm-stamp 240ms cubic-bezier(0.16, 1, 0.3, 1) 600ms backwards; }
+    [data-js="on"] .gm-wordmark { animation: gm-word-in 360ms cubic-bezier(0.16, 1, 0.3, 1) 840ms backwards; }
+    /* Start gate: one owner (this rule) holds the four animations paused until the head script sets data-logo. */
+    [data-js="on"]:not([data-logo="play"]) :is(.gm-card, .gm-giyeok, .gm-seal, .gm-wordmark) { animation-play-state: paused; }
+  }
+
+  /* 1 · card, drawn like a stroke (kit preview frame 1, "┌"): one ten-point polygon on the card's own box, traced as
+     four bands — top (y ≤ 14 %), left (x ≤ 16 %), right (x ≥ 84 %) and bottom (y ≥ 86 %). The band edges lie in the
+     card's empty middle (walls: top/bottom 5 of 46 units, left/right 6, inner fillets included), so every wall is
+     revealed at full thickness and only grows in length. 0–10 %: the corner appears; 10–55 %: the top arm grows
+     left → right and the left arm top → bottom to full length (┌); 55–100 %: the right arm grows downward and the
+     bottom arm rightward to the seal notch (ink ends at 63.75 %). Unused points wait on a band edge, so no sliver
+     ever crosses the ink. Outer edges bleed 4 % so nothing is cut at the last keyframe. */
+  @keyframes gm-card-draw {
+    0% {
+      clip-path: polygon(-4% -4%, -4% -4%, -4% -4%, -4% -4%, -4% -4%, -4% -4%, -4% -4%, -4% -4%, -4% -4%, -4% -4%);
+    }
+    10% {
+      animation-timing-function: cubic-bezier(0.3, 0, 0.7, 1);
+      clip-path: polygon(-4% -4%, 16% -4%, 16% 14%, 16% 14%, 16% 14%, 16% 14%, 16% 14%, 16% 14%, 16% 14%, -4% 14%);
+    }
+    55% {
+      animation-timing-function: cubic-bezier(0.2, 0.5, 0.3, 1);
+      clip-path: polygon(-4% -4%, 104% -4%, 104% 14%, 84% 14%, 84% 14%, 16% 14%, 16% 86%, 16% 86%, 16% 104%, -4% 104%);
+    }
+    100% {
+      clip-path: polygon(-4% -4%, 104% -4%, 104% 66%, 84% 66%, 84% 14%, 16% 14%, 16% 86%, 66% 86%, 66% 104%, -4% 104%);
+    }
+  }
+  /* 2 · ㄱ in pen order. One six-point polygon on the ㄱ's own box (bar = top 29.4 %, leg = right 27.3 %): the bar
+     grows left → right (0–62 %), then the leg grows downward (62–100 %). Points beyond the shape bleed 4 % outward. */
+  @keyframes gm-giyeok-draw {
+    0% {
+      animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+      clip-path: polygon(-4% -4%, -4% -4%, -4% 29.4%, -4% 29.4%, -4% 29.4%, -4% 29.4%);
+    }
+    62% {
+      animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
+      clip-path: polygon(-4% -4%, 104% -4%, 104% 29.4%, 60% 29.4%, 60% 29.4%, -4% 29.4%);
+    }
+    100% { clip-path: polygon(-4% -4%, 104% -4%, 104% 104%, 60% 104%, 60% 29.4%, -4% 29.4%); }
+  }
+  /* 3 · seal: the kit's own stamp keyframes (brand/logo/README.md, "gm-stamp"). */
+  @keyframes gm-stamp {
+    from { opacity: 0; transform: scale(1.04); }
+    to { opacity: 1; transform: none; }
+  }
+  /* 4 · wordmark: a short fade and rise (3 lockup units ≈ 10 px at 1440 px). */
+  @keyframes gm-word-in {
+    from { opacity: 0; transform: translateY(3px); }
+  }
+}

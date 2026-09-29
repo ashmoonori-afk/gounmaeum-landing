@@ -1,0 +1,71 @@
+/*
+ * Product layer — section surfaces (research/landing-v3-spec.md §4, confirmed by the user: "히어로는 파랑, 헤더는 흰색 유지";
+ * "흰색-강조섹션 나머지는 운영사 섹션 배경 남색으로").
+ *   header white · brand hero blue · 이용 흐름, 장례케어, 자주 묻는 질문 white (emphasis) · every other section and the footer navy.
+ * A surface is a token scope, not a set of per-element overrides: [data-surface="navy"] re-declares the text, line,
+ * accent, focus, card and button tokens that styles/product.css reads. White cards that sit on navy (the association
+ * badge, the form) restate the light values. Mockups keep their own literal colours on both surfaces.
+ * Flat only: solid colours and hairlines, no gradient, glow, blur or translucent colour (qa/run.mjs file check).
+ * Every text pair is listed in qa/contrast.mjs.
+ */
+@layer product {
+  [data-surface="light"] { background: var(--color-page); }
+
+  [data-surface="blue"] {
+    --color-focus: #ffffff;
+    background: var(--color-blue);
+    color: #ffffff;
+  }
+
+  [data-surface="navy"] {
+    --color-ink: #ffffff;
+    --color-ink-2: #c9d3e8;
+    --color-note: #9fb0d3;
+    --color-line: #323c57; /* rgba(255, 255, 255, .14) over #121b33, as a solid colour */
+    --color-accent: #8fb0ff;
+    --color-focus: #8fb0ff;
+    --color-surface: #1a2544;
+    --color-panel: #1a2544;
+    --color-panel-line: #34426a;
+    --color-panel-muted: #1a2544;
+    --color-track: #3d4d7a;
+    --color-status-ring: #26365f;
+    --color-edge-strong: #5a6c9e;
+    --edge-lift: 0 4px 0 0 #3d4d7a;
+    --button-secondary-bg: #121b33;
+    --button-secondary-line: #8d9cc0;
+    --button-secondary-ink: #ffffff;
+    --button-secondary-hover: #1a2544;
+    --button-secondary-hover-line: #c9d3e8;
+    background: var(--color-navy);
+    color: var(--color-ink-2);
+  }
+
+  /* White cards on navy restate the light values for their own content. */
+  .trust-badge,
+  .apply-form {
+    --color-ink: var(--light-ink);
+    --color-ink-2: var(--light-ink-2);
+    --color-note: var(--light-note);
+    --color-line: var(--light-line);
+    --color-accent: var(--color-blue);
+    --color-focus: var(--color-blue);
+    --color-surface: #ffffff;
+    --color-panel: var(--color-tint);
+    --color-panel-muted: var(--color-soft);
+    color: var(--light-ink);
+  }
+
+  /* Adjacent navy sections (catchphrase → 서비스, 비용 → 운영사 → 도입, 신청 → footer): a solid hairline across the
+     content width plus the full section gap on both sides, so the change of topic reads without blur or shading. */
+  main > [data-surface="navy"] + [data-surface="navy"],
+  .site-footer { position: relative; }
+  main > [data-surface="navy"] + [data-surface="navy"]::before,
+  .site-footer::before {
+    background: var(--color-line);
+    block-size: 1px;
+    content: "";
+    inset: 0 max(var(--gutter), calc((100% - var(--content)) / 2)) auto;
+    position: absolute;
+  }
+}

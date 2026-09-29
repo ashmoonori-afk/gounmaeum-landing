@@ -1,0 +1,67 @@
+/*
+ * Product layer — L7 운영사 band (navy surface, styles/surfaces.css): the 아이리스 logo, the stat row with the E6
+ * odometer (docs/motion-briefs.md E6, research/landing-v3-spec.md §4b) and the security items.
+ * Static by default: the final figures are the DOM text. scripts/odometer.js adds [data-odo] and an aria-hidden
+ * overlay (.odo) only while a roll is pending or running; this file only draws those states. One owner per property:
+ * Web Animations own the strips' transform and, after landing, the unit's opacity/transform and the rule's
+ * transform; the [data-odo] pre-state below is removed in the same task that starts those animations.
+ */
+@layer product {
+  /* 아이리스 logo (official SVG, unchanged colours), 32 px high beside the eyebrow; never recoloured or stretched. */
+  .operator-kicker { align-items: center; display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
+  .operator-logo { block-size: 2rem; flex: none; inline-size: auto; }
+  .operator-kicker .eyebrow { border-inline-start: 1px solid var(--color-line); line-height: 1.2; padding-inline-start: 1rem; }
+  .operator-kicker .operator-logo[hidden] + .eyebrow { border-inline-start: 0; padding-inline-start: 0; }
+
+  /* Stat row: one column on phones, three from a 50rem container. Numerals are sized from the row's own width so
+     "1,500명+" always fits its column (tabular numerals, tight tracking). */
+  .proof { container: stats / inline-size; margin-block-end: clamp(0.5rem, 0.25rem + 1vw, 1.5rem); }
+  .stat-list { --stat-column-gap: clamp(1.5rem, 0.5rem + 3cqi, 3.5rem); --grid-gap: 2.25rem var(--stat-column-gap); --grid-min: 100%; }
+  @container stats (min-width: 50rem) {
+    .stat-list { --grid-min: calc(33.333% - var(--stat-column-gap)); }
+  }
+  .stat { align-content: start; display: grid; }
+  .stat-figure {
+    color: var(--color-ink);
+    display: block;
+    font-size: clamp(3.5rem, 2rem + 8cqi, 5.25rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  @container stats (min-width: 50rem) {
+    .stat-figure { font-size: clamp(3.5rem, 0.75rem + 7.5cqi, 7.25rem); }
+  }
+  .stat-value { display: inline-block; position: relative; }
+  /* Optical hang (v3 fix round): with tabular numerals the leading glyph carries a wide left side bearing — the "1"
+     about 0.15em, the "2" about 0.065em (measured at 56–98 px) — so the ink started 9–15 px right of the rule and the
+     label below. Pulling the value (text and odometer overlay together) left by that bearing puts the ink on the
+     column edge. data-lead in index.html names the first digit of each fixed figure. */
+  .stat-value[data-lead="1"] { margin-inline-start: -0.14em; }
+  .stat-value[data-lead="2"] { margin-inline-start: -0.06em; }
+  .stat-digits, .odo { font-kerning: none; }
+  .stat-unit { display: inline-block; font-size: 0.4em; font-weight: 700; letter-spacing: -0.02em; margin-inline-start: 0.14em; transform-origin: 0 85%; }
+  .stat-rule { background: var(--color-accent); block-size: 2px; display: block; margin-block: 1.125rem 0.875rem; transform-origin: 0 50%; }
+  .stat-label { color: var(--color-note); font-size: 1.0625rem; font-weight: 600; }
+
+  /* Odometer overlay: one clipped cell per digit, each holding a vertical strip 0‥9 (repeated) that only moves with
+     transform: translateY. The overlay sits on the real text, so the text reserves the exact size (no layout shift). */
+  .odo { color: var(--color-ink); display: flex; inset: 0 auto 0 0; pointer-events: none; position: absolute; }
+  .odo-cell { overflow: clip; }
+  .odo-strip { display: block; white-space: pre; }
+  .stat[data-odo] .stat-digits { opacity: 0; }
+  .stat[data-odo] .stat-unit { opacity: 0; transform: scale(0.8); }
+  .stat[data-odo] .stat-rule { transform: scaleX(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .odo { display: none; }
+    .stat[data-odo] .stat-digits, .stat[data-odo] .stat-unit { opacity: 1; transform: none; }
+    .stat[data-odo] .stat-rule { transform: none; }
+  }
+
+  /* Security items (four; 1, 2 or 4 columns like the console features). */
+  .trust-list { --grid-gap: clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+  .trust-item { align-content: start; border-block-start: 1px solid var(--color-line); display: grid; gap: 0.5rem; padding-block-start: 1.25rem; }
+  .trust-item p { color: var(--color-note); font-size: 0.984rem; }
+}

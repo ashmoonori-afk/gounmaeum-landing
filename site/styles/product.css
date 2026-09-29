@@ -1,0 +1,754 @@
+/*
+ * Product layer — brand, typography, colour, section composition, motion states.
+ * Visual language: v7 deck (big confident Pretendard headlines, one blue keyword, grey lede, tinted mock panels)
+ * + hi-fi prototype (ink #191F28, Pretendard UI). Since landing v3 (research/landing-v3-spec.md §4) most sections sit
+ * on navy: the colour tokens below are the light defaults, and styles/surfaces.css re-declares them per surface.
+ * Idioms adapted from StyleGallery examples/toss-homepage-clone/styles.css (skip link, reveal,
+ * reduced-motion guard) and examples/stylegallery-homepage/styles.css (hero grid, mobile nav).
+ * Contrast pairs are verified by qa/contrast.mjs.
+ */
+@layer product {
+  :root {
+    /* Light surface values, named once so white cards inside navy sections can restate them (styles/surfaces.css). */
+    --light-ink: #191f28;
+    --light-ink-2: #4e5968;
+    --light-note: #5b6573;
+    --light-line: #e3e7ed;
+    --color-ink: var(--light-ink);
+    --color-ink-2: var(--light-ink-2);
+    --color-note: var(--light-note);
+    --color-line: var(--light-line);
+    --color-field: #6b7684;
+    --color-blue: #2458d8;
+    --color-blue-hover: #1d47b3;
+    --color-blue-fill: #2f80ed;
+    --color-tint: #eef3fd;
+    --color-tint-2: #e3ebfb;
+    --color-soft: #f7f9fc;
+    --color-page: #ffffff;
+    --color-navy: #121b33;
+    --color-navy-2: #1a2544;
+    /* Semantic tokens (light defaults; styles/surfaces.css re-declares them on [data-surface="navy"]). */
+    --color-accent: #2458d8; /* text accents: eyebrow, keyword, figures, links */
+    --color-focus: #2458d8;
+    --color-surface: #ffffff; /* cards */
+    --color-panel: #eef3fd; /* tinted panels: 0원 box, 장례케어 tile, mock frames */
+    --color-panel-line: #d6e1f8;
+    --color-panel-muted: #f7f9fc; /* quiet boxes: 준비할 것, consent terms */
+    --color-track: #c3d3f2;
+    --color-status-ring: #deebfc;
+    --button-secondary-bg: #ffffff;
+    --button-secondary-line: #cfd6df;
+    --button-secondary-ink: #191f28;
+    --button-secondary-hover: #f7f9fc;
+    --button-secondary-hover-line: #aeb8c5;
+    --color-error: #b42318;
+    --color-error-bg: #fdecec;
+    --color-success: #1d6b45;
+    --color-success-bg: #eaf6ef;
+    --color-pending: #8a4b08;
+    --color-pending-bg: #fff4e5;
+    --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    --font-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+    --content: 72rem;
+    --measure: 40rem;
+    --gutter: clamp(1rem, 4vw, 3rem);
+    --section-gap: clamp(4rem, 2.5rem + 5vw, 7rem);
+    --header-h: 4rem;
+    --mobile-cta-h: 4.75rem;
+    --radius-s: 0.625rem;
+    --radius-m: 0.875rem;
+    --radius-l: 1.25rem;
+    --radius-xl: 1.75rem;
+    /* Flat visuals (messaging v2 round, same rule as deck v8): no blurred shadow, glow, gradient or translucent veil.
+       Depth comes from flat colour, crisp 1–2 px edges and one hard (0-blur) offset edge on hover. */
+    --color-edge: #cfd8e6;
+    --color-edge-strong: #b9c7de;
+    --edge-lift: 0 4px 0 0 var(--color-edge-strong);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 150ms;
+    --duration-reveal: 600ms;
+  }
+
+  /* ---------- Base (element resets live in @layer reset at the end of this file) ---------- */
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* No scroll smoothing (SG examples/scroll-story/styles.css): in-page jumps across the pinned 이용 흐름 track
+       must not fast-forward the story (docs/motion-briefs.md E2). */
+    scroll-behavior: auto;
+    scroll-padding-block-start: calc(var(--header-h) + 0.75rem);
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+    overflow-wrap: anywhere;
+    text-rendering: optimizeLegibility;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { color: var(--color-ink); letter-spacing: -0.03em; line-height: 1.3; }
+  /* Balanced headline wraps; semantic units are also bound with &nbsp; in the markup (e.g. 기업&nbsp;혜택으로). */
+  h2 { text-wrap: balance; }
+  a { color: inherit; }
+  button, input, select, textarea { color: inherit; font: inherit; }
+  strong, b { font-weight: 700; }
+
+  :focus-visible { border-radius: 0.25rem; outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  main:focus-visible { outline: none; }
+
+  .sr-only {
+    block-size: 1px;
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+
+  /* Skip link: StyleGallery toss-homepage-clone/styles.css idiom */
+  .skip-link {
+    background: var(--color-ink);
+    border-radius: var(--radius-s);
+    color: #fff;
+    font-weight: 700;
+    inset-block-start: 0.75rem;
+    inset-inline-start: 0.75rem;
+    padding: 0.75rem 1rem;
+    position: fixed;
+    text-decoration: none;
+    transform: translateY(-200%);
+    z-index: 100;
+  }
+  .skip-link:focus { transform: none; }
+
+  /* ---------- Shared type ---------- */
+  .eyebrow {
+    color: var(--color-accent);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .accent { color: var(--color-accent); }
+  /* Keeps a ·-joined glossary pair on one row (부의금·축의금, 본부·팀): keep-all still breaks beside the middle dot. */
+  .nobr { white-space: nowrap; }
+
+  .section { padding-block: var(--section-gap); }
+  .section-stack { --stack-gap: clamp(2.5rem, 2rem + 2.5vw, 4rem); }
+
+  .section-head { --stack-gap: 0.875rem; max-inline-size: 48rem; }
+  .section-head h2 { font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem); font-weight: 700; }
+  /* Clause break for two-clause H2s, only where both clauses fit one line each (balance split them mid-phrase). */
+  @media (max-width: 47.99rem) { .break-wide { display: none; } }
+  .section-head .eyebrow { margin-block-end: 0.25rem; }
+
+  .lede {
+    color: var(--color-ink-2);
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: 1.75;
+    max-inline-size: var(--measure);
+  }
+
+  .section-note { color: var(--color-note); font-size: 0.9375rem; }
+
+  .mock-caption {
+    color: var(--color-note);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    margin-block-start: 0.875rem;
+    text-align: center;
+  }
+
+  .text-link {
+    color: var(--color-accent);
+    font-weight: 700;
+    text-decoration: none;
+    text-underline-offset: 0.25em;
+  }
+  .text-link:hover { text-decoration: underline; }
+
+  /* Unconfirmed client values (scripts/site-config.js): visible dashed placeholder in preview. */
+  .config-slot[data-state="unset"],
+  .config-link[data-state="unset"] {
+    background: var(--color-pending-bg);
+    border-radius: 0.3em;
+    color: var(--color-pending);
+    font-weight: 600;
+    outline: 1.5px dashed #d9822b;
+    outline-offset: 1px;
+    padding-inline: 0.35em;
+    text-decoration: none;
+  }
+  .config-link[data-state="set"] .config-suffix { display: none; }
+
+  /* ---------- Buttons ---------- */
+  .button {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-m);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    justify-content: center;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    min-block-size: 3rem;
+    padding: 0.75rem 1.375rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--duration-fast) ease-out, transform var(--duration-fast) ease-out;
+  }
+  .button-small { font-size: 0.9375rem; min-block-size: 2.5rem; padding: 0.5rem 1rem; }
+  .button-large { font-size: 1.0625rem; min-block-size: 3.5rem; padding-inline: 1.75rem; }
+  .button-block { inline-size: 100%; }
+  .button-primary { background: var(--color-blue); color: #fff; }
+  .button-primary:hover { background: var(--color-blue-hover); transform: translateY(-1px); }
+  .button-primary:active { transform: none; }
+  /* Secondary: white on light surfaces, an outlined light variant on navy (tokens in styles/surfaces.css). */
+  .button-secondary { background: var(--button-secondary-bg); border-color: var(--button-secondary-line); color: var(--button-secondary-ink); }
+  .button-secondary:hover { background: var(--button-secondary-hover); border-color: var(--button-secondary-hover-line); }
+  /* 소개서 다운로드: icon + label + a visible size hint, all part of the link's accessible name. */
+  .button-download { gap: 0.5rem; }
+  .button-icon { block-size: 1.125rem; fill: none; flex: none; inline-size: 1.125rem; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+  .button-hint { border-inline-start: 1px solid var(--button-secondary-line); color: var(--color-note); font-size: 0.8125rem; font-weight: 600; margin-inline-start: 0.25rem; padding-inline-start: 0.625rem; white-space: nowrap; }
+
+  /* ---------- L0 Header (sticky-header) ---------- */
+  .site-header {
+    background: var(--color-page);
+    border-block-end: 1px solid var(--color-line);
+  }
+  .site-header-inner {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+    min-block-size: var(--header-h);
+  }
+  /* Brand: the outlined 32 px lockup from the logo kit (brand/logo/small/gounmaeum-lockup-32.svg), never live text.
+     Centred on the nav line; the operator line stays separate text outside the clear space
+     (kit README: clear space = seal radius, 6.5 px at the 32 cut; the 10 px gap and 16 px above/below keep it). */
+  .brand { align-items: center; display: inline-flex; gap: 0.625rem; text-decoration: none; }
+  .brand-lockup, .footer-lockup { block-size: 2rem; display: block; flex: none; inline-size: auto; }
+  /* Live-text 고운마음 inside tightly tracked bold headings: at −0.03em the ㅏ stub of 마 touches the ㅡ of 음
+     (kit README follow-up 5; measured 0.13 px clear at 44 px Bold). −0.01em leaves 1 px clear; the rule floor is −0.02em. */
+  .brand-word { letter-spacing: -0.01em; }
+  .brand-operator { border-inline-start: 1px solid #cfd6df; color: var(--color-note); font-size: 0.75rem; font-weight: 500; padding-inline-start: 0.625rem; }
+  .site-nav { align-items: center; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+  .site-nav-list { display: flex; flex-wrap: wrap; gap: 0.25rem 1.75rem; }
+  .site-nav-list a {
+    color: var(--color-ink-2);
+    display: inline-block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    padding-block: 0.5rem;
+    position: relative;
+    text-decoration: none;
+  }
+  .site-nav-list a::after {
+    background: currentColor;
+    block-size: 2px;
+    content: "";
+    inset: auto 0 0.2rem;
+    position: absolute;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-fast) ease-out;
+  }
+  .site-nav-list a:hover { color: var(--color-ink); }
+  .site-nav-list a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  .menu-toggle {
+    background: transparent;
+    block-size: 2.75rem;
+    border: 0;
+    border-radius: var(--radius-s);
+    cursor: pointer;
+    display: none;
+    inline-size: 2.75rem;
+    padding: 0.75rem 0.625rem;
+  }
+  .menu-toggle-bar { background: var(--color-ink); block-size: 2px; border-radius: 2px; display: block; margin-block: 0.3125rem; transition: transform 200ms ease-out; }
+  /* Bars are named by class (the sr-only label is also a span, so type-position selectors never matched).
+     Bar centres are 7 px apart (2 px bar + 5 px collapsed margin), so each bar moves half of that. */
+  .menu-toggle[aria-expanded="true"] .menu-toggle-bar-top { transform: translateY(0.21875rem) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] .menu-toggle-bar-bottom { transform: translateY(-0.21875rem) rotate(-45deg); }
+
+  @media (max-width: 767.98px) {
+    html:not([data-js="on"]) .site-header { position: static; }
+    html:not([data-js="on"]) .site-nav { padding-block-end: 0.75rem; }
+    [data-js="on"] .menu-toggle:not([hidden]) { display: block; }
+    [data-js="on"] .site-nav {
+      align-items: stretch;
+      background: #fff;
+      border-block-end: 1px solid var(--color-edge);
+      /* Flat 0-blur edge so the open panel reads as a layer over the hero, not as clipped page content. */
+      box-shadow: var(--edge-lift);
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      inset: 100% 0 auto;
+      padding: 0.5rem var(--gutter) 1.25rem;
+      position: absolute;
+    }
+    [data-js="on"] .site-nav[data-open="true"] { display: flex; }
+    [data-js="on"] .site-nav-list { flex-direction: column; gap: 0; }
+    [data-js="on"] .site-nav-list a { border-block-end: 1px solid var(--color-line); display: block; font-size: 1.0625rem; padding-block: 0.875rem; }
+    [data-js="on"] .site-nav-list a::after { display: none; }
+    [data-js="on"] .site-nav .button { min-block-size: 3.25rem; }
+  }
+
+  /* ---------- L1b Catchphrase (the former hero; cover, navy surface) ---------- */
+  .hero { --cover-gap: 0; --cover-min: auto; --cover-padding: clamp(3rem, 2rem + 5vw, 5.5rem); }
+  .hero-layout { align-items: center; display: grid; gap: clamp(2.5rem, 2rem + 3vw, 4.5rem); grid-template-columns: minmax(0, 1fr); }
+  .hero-copy { --stack-gap: 1.375rem; }
+  .hero-title { font-size: clamp(2.125rem, 1.35rem + 3.4vw, 4rem); font-weight: 800; letter-spacing: -0.045em; line-height: 1.16; }
+  /* Inline line spans + <br>: the whole H1 is one text block (the LCP element); qa/run.mjs checks each span fits one line. */
+  .hero-title-line { display: inline; }
+  .hero-sub { color: var(--color-ink-2); font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem); line-height: 1.7; max-inline-size: 34rem; }
+  .money-block {
+    background: var(--color-panel);
+    border: 1px solid var(--color-panel-line);
+    border-radius: var(--radius-l);
+    display: grid;
+    gap: 0.5rem;
+    max-inline-size: 34rem;
+    padding: 1.125rem 1.375rem 1.25rem;
+  }
+  .money-claim { font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.625rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.35; }
+  .money-figure { color: var(--color-accent); font-size: 1.2em; font-weight: 800; }
+  .money-qualifier { color: var(--color-ink-2); font-size: 0.875rem; line-height: 1.65; }
+  .hero-actions { --cluster-gap: 0.75rem; }
+  .hero-meta { --cluster-gap: 0.625rem 1.25rem; }
+  .hero-status { align-items: center; color: var(--color-note); display: flex; font-size: 0.875rem; gap: 0.625rem; }
+
+  /* Association badge (user-corrections U9): the official mark as-is (no redraw/recolour) on a white card,
+     at or below native size (232×50 → 116×25 CSS px, crisp at 2×), next to the words 공식 제휴. */
+  .trust-badge {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-s);
+    display: inline-flex;
+    gap: 0.625rem;
+    padding: 0.4375rem 0.75rem 0.4375rem 0.625rem;
+  }
+  .trust-badge-logo { block-size: 25px; flex: none; inline-size: 116px; }
+  .trust-badge-text { border-inline-start: 1px solid var(--color-line); color: var(--color-ink); font-size: 0.8125rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; padding-inline-start: 0.625rem; white-space: nowrap; }
+  .lede-figure, .care-figure { color: var(--color-accent); font-weight: 800; }
+  .status-dot { background: var(--color-blue-fill); block-size: 0.5rem; border-radius: 50%; box-shadow: 0 0 0 4px var(--color-status-ring); flex: none; inline-size: 0.5rem; }
+  .hero-figure { margin-inline: auto; max-inline-size: 36rem; inline-size: 100%; }
+
+  @media (min-width: 960px) {
+    .hero { --cover-min: calc(100vh - var(--header-h)); }
+    @supports (height: 100svh) { .hero { --cover-min: calc(100svh - var(--header-h)); } }
+    .hero-layout { grid-template-columns: minmax(0, 1.05fr) minmax(24rem, 0.95fr); }
+  }
+  /* Short wide windows (e.g. 1440×500): keep H1, 0원 + Q-line and the primary CTA inside the first viewport. */
+  @media (min-width: 960px) and (max-height: 720px) {
+    .hero { --cover-padding: 1.25rem; }
+    .hero-copy { --stack-gap: 0.75rem; }
+    .hero-title { font-size: clamp(1.875rem, 0.5rem + 5.6vh, 3.25rem); line-height: 1.12; }
+    .hero-sub { font-size: 1rem; line-height: 1.6; max-inline-size: 30rem; }
+    .money-block { gap: 0.25rem; padding: 0.75rem 1rem 0.875rem; }
+    .money-claim { font-size: 1.25rem; }
+    .money-qualifier { font-size: 0.8125rem; line-height: 1.55; }
+    .hero-actions .button-large { min-block-size: 3rem; }
+    .hero-figure { max-inline-size: min(30rem, 80svh); }
+  }
+
+  /* ---------- L2 Services (ram-grid → bento via container query) ---------- */
+  .bento-wrap { container: bento / inline-size; }
+  .bento { --grid-gap: 1rem; --grid-min: 15rem; }
+  .bento-tile {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-l);
+    display: grid;
+    gap: 0.625rem;
+    align-content: start;
+    padding: clamp(1.375rem, 1rem + 1.5vw, 2rem);
+  }
+  .bento-tile h3 { font-size: 1.1875rem; font-weight: 700; }
+  .bento-tile p { color: var(--color-ink-2); font-size: 0.984rem; line-height: 1.7; }
+  .tile-icon { block-size: 2rem; fill: none; inline-size: 2rem; margin-block-end: 0.5rem; stroke: var(--color-accent); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; }
+  .bento-tile-feature {
+    background: var(--color-panel);
+    border-color: var(--color-panel-line);
+    gap: 1rem;
+    grid-template-rows: auto auto 1fr auto;
+  }
+  .bento-tile-feature h3 { font-size: clamp(1.625rem, 1.2rem + 1.4vw, 2.25rem); font-weight: 800; }
+  .bento-tile-feature p { color: var(--color-ink-2); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); max-inline-size: 30rem; }
+  .bento-tile-feature .text-link { align-self: end; font-size: 1.0625rem; justify-self: start; }
+  /* Decorative restatement of the tile copy (aria-hidden): a quiet three-node track across the feature tile. */
+  .care-steps { align-self: end; color: var(--color-accent); display: grid; font-size: 0.9375rem; font-weight: 700; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; list-style: none; margin-block: 1.25rem 0.5rem; }
+  .care-steps li { display: grid; gap: 0.625rem; justify-items: start; line-height: 1.4; padding-inline-end: 0.75rem; position: relative; }
+  .care-steps li::before { background: var(--color-panel); block-size: 0.875rem; border: 2px solid var(--color-accent); border-radius: 50%; content: ""; inline-size: 0.875rem; position: relative; z-index: 1; }
+  .care-steps li:not(:last-child)::after { background: var(--color-track); block-size: 2px; content: ""; inset: calc(0.4375rem - 1px) 0 auto 0.875rem; position: absolute; }
+  .care-steps li:last-child { padding-inline-end: 0; }
+  .care-steps li:last-child::before { background: var(--color-accent); }
+  /* E5: reveal owns opacity + translate, card depth owns transform + box-shadow (one owner per property).
+     Depth is a hard 4 px edge (0 blur) plus a stronger border, never a soft shadow. */
+  .bento-tile[data-linked] {
+    transition: border-color var(--duration-fast) ease-out, box-shadow var(--duration-fast) ease-out, opacity var(--duration-reveal) var(--ease-out), transform var(--duration-fast) ease-out, translate var(--duration-reveal) var(--ease-out);
+  }
+  .bento-tile[data-linked]:hover,
+  .bento-tile[data-linked]:has(a:focus-visible) { border-color: var(--color-edge-strong); box-shadow: var(--edge-lift); transform: translateY(-4px); }
+
+  @container bento (min-width: 36rem) {
+    .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bento-tile-feature { grid-column: span 2; }
+  }
+  /* Two-column range: feature row + 2 + 2 + 1 would leave 사내 부고 알림 alone, so the last tile closes the grid. */
+  @container bento (min-width: 36rem) and (max-width: 55.99rem) {
+    .bento > :last-child { grid-column: span 2; }
+  }
+  @container bento (min-width: 56rem) {
+    .bento { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .bento-tile-feature { grid-column: 1 / span 2; grid-row: 1 / span 2; padding: 2.5rem; }
+  }
+
+  /* ---------- L3 Flow band (white emphasis surface; story composition lives in story.css) ---------- */
+  .flow-section { padding-block-end: clamp(3rem, 2rem + 4vw, 5rem); }
+  .flow-section .section-head { margin-block-end: clamp(2rem, 1.5rem + 2vw, 3rem); }
+
+  /* ---------- L4 Console ---------- */
+  .console-figure { margin-inline: auto; max-inline-size: 64rem; inline-size: 100%; }
+  .feature-list { --grid-gap: clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+  .feature-item { align-content: start; border-block-start: 2px solid var(--color-ink); display: grid; gap: 0.5rem; padding-block-start: 1.125rem; }
+
+  /* Four-item lists (console features, security items, onboarding steps): 1, 2 or 4 columns, never 3 + 1.
+     Only the documented ram-grid change point (--grid-min) moves; the primitive's declarations stay untouched. */
+  .console-section .section-stack, .operator-section .section-stack, .onboarding-section .section-stack { container: section / inline-size; }
+  .feature-list, .trust-list, .steps { --grid-min: 100%; }
+  @container section (min-width: 34rem) {
+    .feature-list, .trust-list, .steps { --grid-min: calc(50% - var(--grid-gap)); }
+  }
+  @container section (min-width: 56rem) {
+    .feature-list, .trust-list, .steps { --grid-min: calc(25% - var(--grid-gap)); }
+  }
+  .feature-item h3, .trust-item h3, .step h3 { font-size: 1.125rem; font-weight: 700; }
+  .feature-item p, .step p { color: var(--color-ink-2); font-size: 0.984rem; }
+
+  /* ---------- L5 장례케어 (white emphasis surface) ---------- */
+  .mechanic { --switcher-gap: 1rem; --switcher-threshold: 46rem; counter-reset: none; }
+  .mechanic-step {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-l);
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .mechanic-step p { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.5; }
+  .mechanic-num {
+    align-items: center;
+    background: var(--color-panel);
+    block-size: 2.5rem;
+    border-radius: 50%;
+    color: var(--color-accent);
+    display: inline-flex;
+    flex: none;
+    font-size: 1.0625rem;
+    font-weight: 800;
+    inline-size: 2.5rem;
+    justify-content: center;
+  }
+  .care-detail { --switcher-gap: 1rem; --switcher-threshold: 44rem; }
+  .care-includes {
+    --stack-gap: 1rem;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-l);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  }
+  .care-includes h3 { font-size: 1.1875rem; font-weight: 700; }
+  .includes-list { display: grid; gap: 0.75rem; }
+  .includes-list li { align-items: baseline; color: var(--color-ink); display: flex; font-size: 1.0625rem; gap: 0.75rem; }
+  .includes-list li::before {
+    block-size: 0.875rem;
+    border-block-end: 2px solid var(--color-accent);
+    border-inline-end: 2px solid var(--color-accent);
+    content: "";
+    flex: none;
+    inline-size: 0.5rem;
+    transform: translateY(-0.125rem) rotate(40deg);
+  }
+  .care-products {
+    --stack-gap: 1.5rem;
+    align-content: space-between;
+    background: var(--color-panel);
+    border-radius: var(--radius-l);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  }
+  /* pretty: no lone phrase on the last row at 1440/1920. Scoped to this paragraph; ledes bind their last phrase with &nbsp;. */
+  .care-products p { color: var(--color-ink-2); font-size: 1.0625rem; line-height: 1.75; text-wrap: pretty; }
+
+  /* ---------- L5b 상조상품 (navy surface; four plan cards, 1 → 2 → 4 columns, never 3 + 1) ---------- */
+  .plans-wrap { container: plans / inline-size; }
+  .plans { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
+  @container plans (min-width: 38rem) { .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container plans (min-width: 64rem) { .plans { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .plan {
+    align-content: start;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-l);
+    display: grid;
+    gap: 0.875rem;
+    padding: clamp(1.375rem, 1rem + 1vw, 1.75rem);
+  }
+  .plan-name { font-size: 1.1875rem; font-weight: 700; }
+  .plan-price { display: grid; gap: 0.25rem; }
+  .plan-price-label { color: var(--color-note); font-size: 0.8125rem; font-weight: 600; }
+  .plan-figure { color: var(--color-accent); font-size: clamp(2rem, 1.6rem + 1.2vw, 2.5rem); font-variant-numeric: tabular-nums; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+  .plan-unit { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; margin-inline-start: 0.25rem; }
+  .plan-fit { border-block-end: 1px solid var(--color-line); color: var(--color-ink); font-size: 0.9375rem; font-weight: 600; padding-block-end: 1rem; }
+  .plan-spec { display: grid; gap: 0.625rem; }
+  .plan-spec div { display: grid; font-size: 0.9375rem; gap: 0.75rem; grid-template-columns: 5.25rem minmax(0, 1fr); line-height: 1.55; }
+  .plan-spec dt { color: var(--color-note); font-weight: 600; }
+  .plan-spec dd { color: var(--color-ink-2); }
+  .plans-notes { --stack-gap: 0.5rem; max-inline-size: 56rem; }
+  .plans-common { color: var(--color-ink); font-size: 1rem; font-weight: 600; }
+  /* Owner note (2026-09-29): small and muted, below the product notes. */
+  .plans-negotiable { color: var(--color-note); font-size: 0.8125rem; margin-block-start: 0.5rem; }
+
+  /* ---------- L6 Cost (semantic table, container-query reflow) ---------- */
+  .cost-table-wrap { container: cost / inline-size; max-inline-size: 56rem; }
+  .cost-table { border-collapse: collapse; inline-size: 100%; }
+  .cost-table caption { caption-side: top; font-size: 1.0625rem; font-weight: 700; padding-block-end: 1rem; text-align: start; }
+  .cost-table thead { block-size: 1px; clip-path: inset(50%); inline-size: 1px; overflow: hidden; position: absolute; white-space: nowrap; }
+  .cost-table tbody { border-block-start: 2px solid var(--color-ink); }
+  .cost-table tbody th, .cost-table td { border-block-end: 1px solid var(--color-line); padding-block: 1.5rem; text-align: start; vertical-align: middle; }
+  .cost-table tbody th { font-size: 1.125rem; font-weight: 700; inline-size: 14rem; padding-inline-end: 1.5rem; }
+  .cost-table td { color: var(--color-ink-2); font-size: 1.0625rem; }
+  .cost-table tr[data-row="company"] td { color: var(--color-ink); font-size: 1.1875rem; font-weight: 700; }
+  /* The Q-line sits right under the table, in the same frame as the table's 0원 (user-corrections Q-line rule). */
+  .cost-notes { --stack-gap: 0.5rem; margin-block-start: 1.25rem; }
+  .cost-zero { color: var(--color-accent); font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-inline-start: 0.375rem; vertical-align: -0.1em; }
+
+  @container cost (max-width: 36rem) {
+    .cost-table, .cost-table caption, .cost-table tbody, .cost-table tr, .cost-table th, .cost-table td { display: block; }
+    .cost-table tbody tr { border-block-end: 1px solid var(--color-line); padding-block: 1.25rem; }
+    .cost-table tbody th, .cost-table td { border: 0; inline-size: auto; padding: 0; }
+    .cost-table tbody th { color: var(--color-accent); font-size: 0.9375rem; margin-block-end: 0.375rem; }
+  }
+
+  /* ---------- L8 Onboarding ---------- */
+  .steps { --grid-gap: clamp(1.25rem, 1rem + 1.5vw, 2rem); counter-reset: none; }
+  .step { --line-up-gap: 0.625rem; border-block-start: 1px solid var(--color-line); padding-block-start: 1.25rem; position: relative; }
+  .step::before { background: var(--color-accent); block-size: 2px; content: ""; inline-size: 2.5rem; inset-block-start: -1px; position: absolute; }
+  .step-num { color: var(--color-accent); font-size: 1.75rem; font-variant-numeric: tabular-nums; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .prep {
+    --sidebar-align: center;
+    --sidebar-gap: 1.5rem;
+    --sidebar-primary-min: 55%;
+    --sidebar-secondary-basis: 14rem;
+    background: var(--color-panel-muted);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-l);
+    padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  }
+  .prep-title { font-size: 1rem; font-weight: 700; margin-block-end: 0.875rem; }
+  .chip-list { --cluster-gap: 0.5rem; }
+  .chip-list li { background: var(--color-surface); border: 1px solid var(--color-panel-line); border-radius: 999px; color: var(--color-accent); font-size: 0.9375rem; font-weight: 600; padding: 0.4375rem 1rem; }
+  .prep-action { --cluster-justify: flex-end; }
+
+  /* ---------- L9 FAQ (white emphasis surface) ---------- */
+  .faq-layout { --sidebar-gap: clamp(1.5rem, 1rem + 3vw, 4rem); --sidebar-primary-min: 58%; --sidebar-secondary-basis: 16rem; }
+  .faq-head h2 { font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem); font-weight: 700; }
+  .faq-list { border-block-start: 2px solid var(--color-ink); }
+  .faq-item { border-block-end: 1px solid var(--color-line); }
+  .faq-item summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    font-weight: 700;
+    gap: 1rem;
+    justify-content: space-between;
+    letter-spacing: -0.02em;
+    list-style: none;
+    padding-block: 1.375rem;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    background:
+      linear-gradient(var(--color-blue), var(--color-blue)) center / 0.875rem 2px no-repeat,
+      linear-gradient(var(--color-blue), var(--color-blue)) center / 2px 0.875rem no-repeat;
+    block-size: 1.75rem;
+    border: 1px solid #cfdaf3;
+    border-radius: 50%;
+    content: "";
+    flex: none;
+    inline-size: 1.75rem;
+  }
+  .faq-item[open] summary::after { background: linear-gradient(var(--color-blue), var(--color-blue)) center / 0.875rem 2px no-repeat; }
+  .faq-answer { color: var(--color-ink-2); max-inline-size: 44rem; padding-block-end: 1.5rem; }
+
+  /* ---------- L10 Apply (form-flow) ---------- */
+  .closing-title { font-family: var(--font-serif); font-size: clamp(1.625rem, 1.15rem + 2vw, 2.5rem) !important; font-weight: 700 !important; letter-spacing: -0.02em; line-height: 1.4; }
+  .apply-layout { --sidebar-align: start; --sidebar-gap: clamp(1.5rem, 1rem + 3vw, 3.5rem); --sidebar-primary-min: 60%; --sidebar-secondary-basis: 15rem; }
+  .apply-contact { align-items: flex-start; background: rgb(255 255 255 / 0.08); border-radius: var(--radius-m); gap: 0.75rem; padding: clamp(1.25rem, 4vw, 2rem); }
+  .apply-contact-label { font-size: 0.9375rem; font-weight: 600; opacity: 0.85; }
+  .apply-contact-phone { font-size: clamp(2rem, 7vw, 3rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .apply-contact-phone a { color: inherit; text-decoration: none; }
+  .apply-aside h3 { font-size: 1rem; font-weight: 700; margin-block-end: 1rem; }
+  .apply-steps { counter-reset: apply; display: grid; gap: 0.25rem; }
+  .apply-steps li { align-items: center; color: var(--color-ink-2); counter-increment: apply; display: flex; gap: 0.875rem; padding-block: 0.5rem; position: relative; }
+  .apply-steps li::before {
+    align-items: center;
+    background: var(--color-surface);
+    block-size: 2rem;
+    border: 1.5px solid var(--color-accent);
+    border-radius: 50%;
+    color: var(--color-accent);
+    content: counter(apply);
+    display: inline-flex;
+    flex: none;
+    font-size: 0.875rem;
+    font-weight: 800;
+    inline-size: 2rem;
+    justify-content: center;
+  }
+  .apply-main { container: apply / inline-size; }
+  .apply-form {
+    --stack-gap: 1.5rem;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    padding: clamp(1.25rem, 0.75rem + 3vw, 2.5rem);
+  }
+  .form-required-note { color: var(--color-note); font-size: 0.875rem; }
+  .form-grid { display: grid; gap: 1.25rem 1.5rem; grid-template-columns: minmax(0, 1fr); }
+  @container apply (min-width: 34rem) { .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .field { display: grid; gap: 0.4375rem; align-content: start; }
+  .field-label { color: var(--color-ink); font-size: 0.9375rem; font-weight: 700; }
+  .req { color: var(--color-blue); }
+  .optional { color: var(--color-note); font-weight: 500; }
+  .field-input {
+    background: #fff;
+    block-size: 3.25rem;
+    border: 1px solid var(--color-field);
+    border-radius: var(--radius-s);
+    color: var(--color-ink);
+    font-size: 1rem;
+    inline-size: 100%;
+    padding: 0 1rem;
+    transition: border-color var(--duration-fast) ease-out, box-shadow var(--duration-fast) ease-out;
+  }
+  select.field-input { appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%234e5968' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right 0.875rem center / 1rem no-repeat; padding-inline-end: 2.5rem; }
+  .field-textarea { block-size: auto; line-height: 1.6; min-block-size: 7.5rem; padding-block: 0.75rem; resize: vertical; }
+  .field-input:hover { border-color: var(--color-ink-2); }
+  .field-input:focus-visible { border-color: var(--color-blue); box-shadow: 0 0 0 3px #d3def7; outline: none; }
+  .field-input[aria-invalid="true"] { border-color: var(--color-error); }
+  .field-input[aria-invalid="true"]:focus-visible { box-shadow: 0 0 0 3px #f2d7d5; }
+  .field-hint { color: var(--color-note); font-size: 0.8125rem; line-height: 1.5; }
+  .field-count { text-align: end; }
+  .field-error { color: var(--color-error); font-size: 0.875rem; font-weight: 600; line-height: 1.5; }
+  .field-error:empty { display: none; }
+  /* CSS alt text keeps the glyph out of the accessible description; the first declaration is the fallback. */
+  .field-error::before { content: "! "; content: "! " / ""; font-weight: 800; }
+  .field-group { border: 0; display: grid; gap: 0.75rem; margin: 0; min-inline-size: 0; padding: 0; }
+  .field-group legend { padding: 0; margin-block-end: 0.75rem; }
+  .check-grid { display: grid; gap: 0.5rem; grid-template-columns: repeat(auto-fill, minmax(min(10.5rem, 100%), 1fr)); }
+  .check { align-items: center; cursor: pointer; display: flex; gap: 0.625rem; }
+  .check-grid .check { border: 1px solid var(--color-line); border-radius: var(--radius-s); padding: 0.75rem 0.875rem; transition: border-color var(--duration-fast) ease-out, background-color var(--duration-fast) ease-out; }
+  .check-grid .check:has(input:checked) { background: var(--color-tint); border-color: #b9ccf3; }
+  .check input { accent-color: var(--color-blue); block-size: 1.125rem; flex: none; inline-size: 1.125rem; margin: 0; }
+  .check input[aria-invalid="true"] { outline: 2px solid var(--color-error); outline-offset: 2px; }
+  .consent { border-block-start: 1px solid var(--color-line); display: grid; gap: 0.625rem; padding-block-start: 1.25rem; }
+  .consent-check label { cursor: pointer; font-weight: 600; }
+  /* 44 px touch height from padding; the equal negative margin keeps the visual spacing unchanged (UX HAR UX-004). */
+  .consent-details summary { color: var(--color-blue); cursor: pointer; font-size: 0.875rem; font-weight: 700; inline-size: fit-content; margin-block: -0.625rem; padding-block: 0.625rem; }
+  .consent-details[open] summary { margin-block-end: 0.125rem; }
+  .consent-details p { color: var(--color-note); font-size: 0.8125rem; margin-block-start: 0.625rem; }
+  .consent-terms { background: var(--color-panel-muted); border-radius: var(--radius-s); display: grid; font-size: 0.875rem; gap: 0.375rem; padding: 0.875rem 1rem; }
+  .consent-terms div { display: grid; gap: 0.75rem; grid-template-columns: 5rem minmax(0, 1fr); }
+  .consent-terms dt { color: var(--color-note); font-weight: 600; }
+  .honeypot { block-size: 1px; clip-path: inset(50%); inline-size: 1px; overflow: hidden; position: absolute; white-space: nowrap; }
+  .form-status { border-radius: var(--radius-m); font-weight: 600; line-height: 1.6; padding: 1rem 1.25rem; }
+  .form-status[data-tone="preview"] { background: var(--color-pending-bg); color: var(--color-pending); }
+  .form-status[data-tone="success"] { background: var(--color-success-bg); color: var(--color-success); }
+  .form-status[data-tone="error"] { background: var(--color-error-bg); color: var(--color-error); }
+  .form-status:not([hidden]) { animation: status-in 200ms ease-out both; }
+  .button-submit { min-inline-size: 12rem; }
+  .button-submit[aria-disabled="true"] { cursor: progress; opacity: 0.82; }
+  /* Without script the submit stays disabled (no GET/POST of personal data to the static host). */
+  .button-submit:disabled { box-shadow: none; cursor: not-allowed; opacity: 0.5; transform: none; }
+  @container apply (max-width: 33.98rem) { .form-actions .button { inline-size: 100%; } }
+
+  /* ---------- Mobile CTA bar (E9) ---------- */
+  .mobile-cta {
+    background: var(--color-page);
+    border-block-start: 1px solid var(--color-edge);
+    inset: auto 0 0;
+    padding: 0.75rem var(--gutter) calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    position: fixed;
+    transform: translateY(110%);
+    transition: transform 250ms var(--ease-out);
+    z-index: 40;
+  }
+  .mobile-cta[data-visible="true"] { transform: none; }
+  @media (max-width: 767.98px) {
+    html[data-cta-bar="on"] { scroll-padding-block-end: calc(var(--mobile-cta-h) + 1rem); }
+    /* The bar's height is reserved inside the navy footer (the last in-flow block), so no white strip shows under it. */
+    html[data-cta-bar="on"] .site-footer { padding-block-end: calc(4rem + var(--mobile-cta-h) + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (min-width: 768px) { .mobile-cta { display: none; } }
+
+  /* ---------- E3 reveals (Toss idiom: visible by default, JS adds the pre-state) ---------- */
+  .reveal { transition: opacity var(--duration-reveal) var(--ease-out), translate var(--duration-reveal) var(--ease-out); transition-delay: var(--reveal-delay, 0ms); }
+  .reveal.reveal-ready { opacity: 0; translate: 0 16px; }
+  .reveal.reveal-ready:not(.is-visible) { transition: none; }
+  .reveal.reveal-ready.is-visible { opacity: 1; translate: none; }
+  .bento > :nth-child(2) { --reveal-delay: 60ms; }
+  .bento > :nth-child(3) { --reveal-delay: 120ms; }
+  .bento > :nth-child(4) { --reveal-delay: 180ms; }
+  .bento > :nth-child(5) { --reveal-delay: 240ms; }
+  .bento > :nth-child(6) { --reveal-delay: 300ms; }
+  .ram-grid > .reveal:nth-child(2), .mechanic > :nth-child(2) { --reveal-delay: 60ms; }
+  .ram-grid > .reveal:nth-child(3), .mechanic > :nth-child(3) { --reveal-delay: 120ms; }
+  .ram-grid > .reveal:nth-child(4) { --reveal-delay: 180ms; }
+
+  @keyframes status-in { from { opacity: 0; } }
+
+  /* E10: FAQ disclosure height, only where supported and motion is welcome. */
+  @supports (interpolate-size: allow-keywords) {
+    @media (prefers-reduced-motion: no-preference) {
+      .faq-item { interpolate-size: allow-keywords; }
+      .faq-item::details-content { block-size: 0; overflow: clip; transition: block-size 320ms var(--ease-out), content-visibility 320ms allow-discrete; }
+      .faq-item[open]::details-content { block-size: auto; }
+    }
+  }
+
+  /* Reduced motion (Toss styles.css guard + brief §6): endpoints stay correct, movement goes. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; }
+    .reveal.reveal-ready { opacity: 1; translate: none; }
+    .bento-tile[data-linked]:hover, .bento-tile[data-linked]:has(a:focus-visible), .button-primary:hover { transform: none; }
+  }
+}
+
+/* Element resets, below @layer layout (declared in styles/layout.css). */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
+  ul, ol { padding: 0; }
+  ul[role="list"], ol[role="list"] { list-style: none; }
+  img, svg { display: block; max-inline-size: 100%; }
+  /* Keep the hidden attribute authoritative over component display values (e.g. the story toggle without script). */
+  [hidden] { display: none !important; }
+}
